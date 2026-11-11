@@ -1,0 +1,5 @@
+<resources>
+    <style name="Theme.Tagwerk" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">#040404</item>
+    </style>
+</resources>

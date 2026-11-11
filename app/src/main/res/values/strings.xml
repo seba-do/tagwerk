@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Tagwerk</string>
+    <string name="widget_small_label">Tagwerk: Nächste Aufgabe</string>
+    <string name="widget_small_description">Zeigt die nächste Aufgabe von heute und startet sie.</string>
+    <string name="widget_wide_label">Tagwerk: Aufgabe mit Schritten</string>
+    <string name="widget_wide_description">Zeigt die nächste Aufgabe von heute und lässt dich ihre Schritte abhaken.</string>
+</resources>
