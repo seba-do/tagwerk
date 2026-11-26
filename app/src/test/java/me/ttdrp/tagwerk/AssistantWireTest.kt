@@ -24,6 +24,10 @@ import kotlin.concurrent.thread
 
 /** Prüft, was tatsächlich über die Leitung geht, ohne echte API. */
 class AssistantWireTest {
+    init {
+        TestStrings.install()
+    }
+
     private val api = FakeApi()
 
     @After

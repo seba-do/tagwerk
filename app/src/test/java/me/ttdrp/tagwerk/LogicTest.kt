@@ -25,6 +25,10 @@ import java.time.LocalDate
 import java.time.ZoneOffset
 
 class LogicTest {
+    init {
+        TestStrings.install()
+    }
+
     private val minute = 60_000L
 
     @Test
@@ -152,8 +156,8 @@ class LogicTest {
 
     @Test
     fun `Zerlegen nennt dem Modell die geplante Dauer`() {
-        assertTrue(PromptText.breakDownInstruction("Steuer", 45).contains("45 Minuten"))
-        assertFalse(PromptText.breakDownInstruction("Steuer", null).contains("Minuten"))
+        assertTrue(PromptText.breakDownInstruction("Steuer", 45).contains("45 minutes"))
+        assertFalse(PromptText.breakDownInstruction("Steuer", null).contains("minutes"))
     }
 
     private val friday = LocalDate.of(2026, 11, 6)
@@ -188,10 +192,10 @@ class LogicTest {
 
     @Test
     fun `Karte nennt den Tag nur wenn er nicht heute ist`() {
-        assertEquals("Plan, Abend", Proposals.placeLabel(proposed(Kind.PLAN, null), friday))
-        assertEquals("Plan, morgen, Abend", Proposals.placeLabel(proposed(Kind.PLAN, friday.plusDays(1)), friday))
-        assertTrue(Proposals.placeLabel(proposed(Kind.PLAN, friday.plusDays(5)), friday).contains("11."))
-        assertEquals("Liste", Proposals.placeLabel(proposed(Kind.TODO, friday.plusDays(1)), friday))
+        assertEquals("Plan, Evening", Proposals.placeLabel(proposed(Kind.PLAN, null), friday))
+        assertEquals("Plan, tomorrow, Evening", Proposals.placeLabel(proposed(Kind.PLAN, friday.plusDays(1)), friday))
+        assertTrue(Proposals.placeLabel(proposed(Kind.PLAN, friday.plusDays(5)), friday).contains("11"))
+        assertEquals("List", Proposals.placeLabel(proposed(Kind.TODO, friday.plusDays(1)), friday))
     }
 
     @Test
@@ -205,11 +209,11 @@ class LogicTest {
             ),
             friday,
         )
-        assertTrue(text.contains("Freitag"))
+        assertTrue(text.contains("Friday"))
         assertTrue(text.contains("2026-11-06"))
-        assertTrue(text.contains("Heute (30 Min., heute geplant)"))
-        assertTrue(text.contains("Spaeter (30 Min., geplant für 2026-11-08)"))
-        assertTrue(text.contains("Liste (30 Min., auf der Liste)"))
+        assertTrue(text.contains("Heute (30 min, planned for today)"))
+        assertTrue(text.contains("Spaeter (30 min, planned for 2026-11-08)"))
+        assertTrue(text.contains("Liste (30 min, on the list)"))
         assertFalse(text.contains("Gestern"))
     }
 

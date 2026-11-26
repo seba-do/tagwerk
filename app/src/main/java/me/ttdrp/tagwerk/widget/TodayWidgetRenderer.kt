@@ -101,7 +101,7 @@ object TodayWidgetRenderer {
         views.setInt(R.id.widget_circle, "setColorFilter", tintColor(NOTHING_LEFT_TINT).toArgb())
         views.setTextViewText(R.id.widget_emoji, NOTHING_LEFT_EMOJI)
         views.setViewVisibility(R.id.widget_meta, View.GONE)
-        showTitle(context, views, "Alles geschafft")
+        showTitle(context, views, context.getString(R.string.widget_all_done))
         views.setViewVisibility(R.id.widget_start, View.GONE)
         if (wide) views.setViewVisibility(R.id.widget_steps, View.GONE)
     }
@@ -116,7 +116,7 @@ object TodayWidgetRenderer {
             views.setViewVisibility(R.id.widget_meta, View.VISIBLE)
             views.setTextViewText(R.id.widget_meta, meta(task))
             showTitle(context, views, task.title)
-            views.setTextViewText(R.id.widget_start, "Start ▶︎")
+            views.setTextViewText(R.id.widget_start, context.getString(R.string.widget_start))
             views.setOnClickPendingIntent(R.id.widget_start, startFocus(context, task.id))
         } else {
             views.setInt(R.id.widget_circle_running, "setColorFilter", color)
@@ -149,7 +149,7 @@ object TodayWidgetRenderer {
         }
         views.setViewVisibility(R.id.widget_controls, View.VISIBLE)
         views.setImageViewResource(R.id.widget_pause, if (paused) R.drawable.widget_play else R.drawable.widget_pause)
-        views.setContentDescription(R.id.widget_pause, if (paused) "Weiter" else "Pause")
+        views.setContentDescription(R.id.widget_pause, context.getString(if (paused) R.string.action_resume else R.string.action_pause))
         views.setOnClickPendingIntent(R.id.widget_extend, timerAction(context, ACTION_EXTEND))
         views.setOnClickPendingIntent(R.id.widget_pause, timerAction(context, ACTION_TOGGLE_PAUSE))
         views.setOnClickPendingIntent(R.id.widget_finish, timerAction(context, ACTION_FINISH))

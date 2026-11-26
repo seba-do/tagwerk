@@ -1,5 +1,7 @@
 package me.ttdrp.tagwerk.ui
 
+import me.ttdrp.tagwerk.R
+import me.ttdrp.tagwerk.model.str
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -111,13 +113,13 @@ fun StepsEditor(
         Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 14.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(RowGap)) {
             Row(Modifier.padding(bottom = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    "Teilaufgaben",
+                    str(R.string.steps_title),
                     Modifier.weight(1f),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
                 PillLabel(
-                    if (busy) "Denkt nach…" else "Schritte vorschlagen",
+                    str(if (busy) R.string.thinking else R.string.steps_suggest),
                     container = MaterialTheme.colorScheme.surfaceContainerHigh,
                     leading = Icons.Outlined.AutoAwesome,
                     tight = true,
@@ -176,9 +178,9 @@ fun StepsEditor(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(Modifier.weight(1f)) {
-                Text("Timer pro Schritt", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
+                Text(str(R.string.steps_timer), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
                 Text(
-                    "Jeder Schritt zählt im Fokus für sich herunter",
+                    str(R.string.steps_timer_hint),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -230,7 +232,7 @@ private fun StepRow(
             Modifier
                 .clip(CircleShape)
                 .clickable(role = Role.Button, onClick = onPickVisuals)
-                .semantics { contentDescription = "Emoji und Farbe für diesen Schritt" },
+                .semantics { contentDescription = str(R.string.cd_step_visuals) },
         ) {
             val showEmoji = step.title.isNotBlank() || step.emoji != null
             EmojiBadge(if (showEmoji) step.shownEmoji else "", EmojiGuess.tintFor(step.title), color = step.color, neutral = true)
@@ -242,14 +244,14 @@ private fun StepRow(
                 .weight(1f)
                 .padding(horizontal = 9.dp)
                 .focusRequester(focus)
-                .semantics { contentDescription = "Titel des Schritts" },
+                .semantics { contentDescription = str(R.string.cd_step_title) },
             singleLine = true,
             textStyle = titleStyle,
             cursorBrush = SolidColor(colors.primary),
             keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
             decorationBox = { field ->
                 Box {
-                    if (step.title.isEmpty()) Text("Wie heißt der Schritt?", style = titleStyle.copy(color = colors.onSurfaceVariant))
+                    if (step.title.isEmpty()) Text(str(R.string.step_placeholder), style = titleStyle.copy(color = colors.onSurfaceVariant))
                     field()
                 }
             },
@@ -262,12 +264,12 @@ private fun StepRow(
                 .clickable(role = Role.Button, onClick = onDelete),
             contentAlignment = Alignment.Center,
         ) {
-            Icon(Icons.Outlined.Delete, contentDescription = "Schritt entfernen", tint = DeleteTint, modifier = Modifier.size(22.dp))
+            Icon(Icons.Outlined.Delete, contentDescription = str(R.string.cd_remove_step), tint = DeleteTint, modifier = Modifier.size(22.dp))
         }
         Box(
             grip
                 .size(32.dp)
-                .semantics { contentDescription = "Schritt verschieben" },
+                .semantics { contentDescription = str(R.string.cd_move_step) },
             contentAlignment = Alignment.Center,
         ) {
             GripDots(colors.onSurface)
@@ -293,7 +295,7 @@ private fun MinutesPill(step: Subtask, onMinutes: (Int) -> Unit) {
             .clip(CircleShape)
             .background(MaterialTheme.colorScheme.surfaceContainerHigh)
             .padding(vertical = 6.dp)
-            .semantics { contentDescription = "Minuten" },
+            .semantics { contentDescription = str(R.string.cd_minutes) },
         singleLine = true,
         textStyle = style,
         cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
@@ -334,7 +336,7 @@ private fun AddStepButton(onClick: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            "SCHRITT HINZUFÜGEN",
+            str(R.string.add_step).uppercase(),
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(end = 8.dp),

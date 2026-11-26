@@ -71,8 +71,8 @@ class FocusAlarmScheduler(private val context: Context) {
     )
 
     /** Der Alarm-Stream ist auch bei stummgeschaltetem Klingelton hörbar. Den Ton gibt das System vor. */
-    private fun channel() = NotificationChannel(CHANNEL_ID, "Fokus-Timer", NotificationManager.IMPORTANCE_HIGH).apply {
-        description = "Meldet das Ende des Timers und den Wechsel zum nächsten Schritt"
+    private fun channel() = NotificationChannel(CHANNEL_ID, context.getString(R.string.channel_focus), NotificationManager.IMPORTANCE_HIGH).apply {
+        description = context.getString(R.string.channel_focus_description)
         enableVibration(true)
         setSound(
             RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION),

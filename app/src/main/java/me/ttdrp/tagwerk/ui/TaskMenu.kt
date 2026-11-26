@@ -1,5 +1,7 @@
 package me.ttdrp.tagwerk.ui
 
+import me.ttdrp.tagwerk.R
+import me.ttdrp.tagwerk.model.str
 import android.app.DatePickerDialog
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -81,7 +83,7 @@ fun TaskMenu(
 
     if (askDeleteScope) {
         ScopeDialog(
-            title = "Löschen",
+            title = str(R.string.action_delete),
             allowThis = true,
             onDismiss = onDismiss,
             onPick = { deleteScope ->
@@ -105,11 +107,11 @@ fun TaskMenu(
                 MenuRow(Icons.Outlined.Checklist, list.name) { closeThen { vm.moveToList(task, list) } }
             }
         } else {
-            MenuRow(Icons.Outlined.ContentCopy, "Kopie erstellen") { closeThen { vm.duplicateTask(task) } }
+            MenuRow(Icons.Outlined.ContentCopy, str(R.string.menu_duplicate)) { closeThen { vm.duplicateTask(task) } }
             if (targets.isNotEmpty()) {
-                MenuRow(Icons.Outlined.Upload, "Zur Liste verschieben") { pickList = true }
+                MenuRow(Icons.Outlined.Upload, str(R.string.menu_move_to_list)) { pickList = true }
             }
-            MenuRow(Icons.Outlined.Event, if (isTodo) "Aufgabe planen" else "Aufgabe neu terminieren") {
+            MenuRow(Icons.Outlined.Event, str(if (isTodo) R.string.menu_schedule else R.string.menu_reschedule)) {
                 closeThen {
                     val current = task.epochDay?.let(LocalDate::ofEpochDay) ?: LocalDate.now()
                     DatePickerDialog(
@@ -122,14 +124,14 @@ fun TaskMenu(
                 }
             }
             if (!isTodo) {
-                MenuRow(Icons.Outlined.Today, "Für morgen neu planen") { closeThen { vm.rescheduleTask(task, LocalDate.now().plusDays(1)) } }
+                MenuRow(Icons.Outlined.Today, str(R.string.menu_tomorrow)) { closeThen { vm.rescheduleTask(task, LocalDate.now().plusDays(1)) } }
             }
-            MenuRow(Icons.Outlined.AutoAwesome, "Aufschlüsselung vorschlagen") { closeThen { onBreakDown(task) } }
+            MenuRow(Icons.Outlined.AutoAwesome, str(R.string.menu_break_down)) { closeThen { onBreakDown(task) } }
             if (!task.isDone) {
-                MenuRow(Icons.Filled.PlayArrow, "Aufgabe starten") { closeThen { onStart(task) } }
+                MenuRow(Icons.Filled.PlayArrow, str(R.string.menu_start)) { closeThen { onStart(task) } }
             }
-            MenuRow(Icons.Outlined.Edit, "Aufgabe bearbeiten") { closeThen { onEdit(task) } }
-            MenuRow(Icons.Outlined.Delete, "Aufgabe löschen", MaterialTheme.colorScheme.error) {
+            MenuRow(Icons.Outlined.Edit, str(R.string.menu_edit)) { closeThen { onEdit(task) } }
+            MenuRow(Icons.Outlined.Delete, str(R.string.menu_delete), MaterialTheme.colorScheme.error) {
                 if (Recurrence.masterOf(state.tasks, task) != null) {
                     askDeleteScope = true
                 } else {
@@ -141,8 +143,8 @@ fun TaskMenu(
     }
 }
 
-/** Die App nennt Einträge im Plan "Aufgabe" und Einträge auf einer Liste "To-do". */
-internal fun kindNoun(kind: Kind): String = if (kind == Kind.TODO) "To-do" else "Aufgabe"
+/** The app calls plan entries "task" and list entries "to-do". */
+internal fun editTitle(kind: Kind): String = str(if (kind == Kind.TODO) R.string.edit_todo else R.string.edit_task)
 
 @Composable
 private fun MenuRow(

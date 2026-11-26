@@ -12,6 +12,10 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class FocusAlarmsTest {
+    init {
+        TestStrings.install()
+    }
+
     private val min = 60_000L
     private val start = 1_000_000L
     private val steps = listOf(
@@ -62,21 +66,21 @@ class FocusAlarmsTest {
     fun `Meldung nennt den naechsten Schritt`() {
         val task = Task(title = "Steuer", subtasks = steps)
         val s = FocusClock.start("t", 15, start)
-        assertEquals(AlarmText("Steuer", "Weiter mit: Formular"), FocusAlarms.message(s, task, at(5)))
+        assertEquals(AlarmText("Steuer", "Up next: Formular"), FocusAlarms.message(s, task, at(5)))
     }
 
     @Test
     fun `Meldung am Ende nennt die Aufgabe`() {
         val task = Task(title = "Steuer", subtasks = steps)
         val s = FocusClock.start("t", 15, start)
-        assertEquals(AlarmText("Steuer", "Die geplante Zeit ist um."), FocusAlarms.message(s, task, at(15)))
+        assertEquals(AlarmText("Steuer", "The planned time is up."), FocusAlarms.message(s, task, at(15)))
     }
 
     @Test
     fun `verspaeteter Alarm meldet den aktuellen Stand`() {
         val task = Task(title = "Steuer", subtasks = steps)
         val s = FocusClock.start("t", 15, start)
-        assertEquals("Die geplante Zeit ist um.", FocusAlarms.message(s, task, at(40))?.text)
+        assertEquals("The planned time is up.", FocusAlarms.message(s, task, at(40))?.text)
     }
 
     @Test
@@ -84,7 +88,7 @@ class FocusAlarmsTest {
         val task = Task(title = "Steuer", subtasks = steps)
         val s = FocusClock.extend(FocusClock.start("t", 15, start), 5)
         assertEquals(
-            AlarmText("Steuer", "Alle Schritte sind durch. Die Zusatzzeit läuft noch."),
+            AlarmText("Steuer", "All steps are done. The extra time is still running."),
             FocusAlarms.message(s, task, at(15)),
         )
     }

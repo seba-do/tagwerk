@@ -1,5 +1,7 @@
 package me.ttdrp.tagwerk.ui
 
+import me.ttdrp.tagwerk.R
+import me.ttdrp.tagwerk.model.str
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.automirrored.outlined.Sort
@@ -172,7 +174,7 @@ fun TodoScreen(
             )
             RoundIconButton(
                 Icons.Filled.Add,
-                "Neue Aufgabe",
+                str(R.string.new_todo),
                 onClick = { onNew(Task(title = "", kind = Kind.TODO, listId = list?.id)) },
             )
         }
@@ -288,13 +290,13 @@ fun TodoScreen(
                         ) {
                             Column(Modifier.weight(1f)) {
                                 Text(
-                                    "Ideen für diese Liste",
+                                    str(R.string.ideas_title),
                                     style = MaterialTheme.typography.headlineSmall.copy(fontFamily = MaterialTheme.typography.titleSmall.fontFamily),
                                     fontWeight = MaterialTheme.typography.titleSmall.fontWeight,
                                     color = MaterialTheme.colorScheme.onBackground,
                                 )
                                 Text(
-                                    "Passend zu dem, was schon draufsteht",
+                                    str(R.string.ideas_subtitle),
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
@@ -304,7 +306,7 @@ fun TodoScreen(
                                     .size(44.dp)
                                     .clip(CircleShape)
                                     .clickable(enabled = !busy && list != null, role = Role.Button, onClick = fetchIdeas)
-                                    .semantics { contentDescription = "Neue Ideen holen" },
+                                    .semantics { contentDescription = str(R.string.cd_new_ideas) },
                                 contentAlignment = Alignment.Center,
                             ) {
                                 Icon(Icons.Filled.Replay, contentDescription = null, tint = MaterialTheme.colorScheme.onBackground)
@@ -314,7 +316,7 @@ fun TodoScreen(
                     if (busy) {
                         item(key = "ideas-busy") { PulsingRows(3, Modifier.fillMaxWidth().padding(12.dp)) }
                     } else if (suggestions.isEmpty()) {
-                        item(key = "ideas-empty") { DashedCard("Ideen holen", onClick = fetchIdeas) }
+                        item(key = "ideas-empty") { DashedCard(str(R.string.get_ideas), onClick = fetchIdeas) }
                     }
                     items(suggestions, key = { "idea-${it.title}" }) { idea ->
                         SuggestionRow(
@@ -377,17 +379,17 @@ fun TodoScreen(
         AlertDialog(
             onDismissRequest = { askNewList = false },
             containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-            title = { Text("Neue Liste") },
+            title = { Text(str(R.string.new_list)) },
             text = {
-                OutlinedTextField(value = name, onValueChange = { name = it }, singleLine = true, label = { Text("Name") })
+                OutlinedTextField(value = name, onValueChange = { name = it }, singleLine = true, label = { Text(str(R.string.name)) })
             },
             confirmButton = {
                 TextButton(enabled = name.isNotBlank(), onClick = {
                     vm.addList(name)
                     askNewList = false
-                }) { Text("Anlegen") }
+                }) { Text(str(R.string.action_create)) }
             },
-            dismissButton = { TextButton(onClick = { askNewList = false }) { Text("Abbrechen") } },
+            dismissButton = { TextButton(onClick = { askNewList = false }) { Text(str(R.string.action_cancel)) } },
         )
     }
     if (askEditLists) {
@@ -402,16 +404,16 @@ fun TodoScreen(
         AlertDialog(
             onDismissRequest = { listToDelete = null },
             containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-            title = { Text("„${doomed.name}“ löschen?") },
-            text = { Text("Die To-dos auf dieser Liste werden mit gelöscht.") },
+            title = { Text(str(R.string.delete_list_title, doomed.name)) },
+            text = { Text(str(R.string.delete_list_text)) },
             confirmButton = {
                 TextButton(onClick = {
                     vm.deleteList(doomed.id)
                     if (selectedId == doomed.id) selectedId = null
                     listToDelete = null
-                }) { Text("Löschen") }
+                }) { Text(str(R.string.action_delete)) }
             },
-            dismissButton = { TextButton(onClick = { listToDelete = null }) { Text("Behalten") } },
+            dismissButton = { TextButton(onClick = { listToDelete = null }) { Text(str(R.string.keep)) } },
         )
     }
 }
@@ -428,7 +430,7 @@ private fun EditListsDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-        title = { Text("Listen bearbeiten") },
+        title = { Text(str(R.string.edit_lists)) },
         text = {
             Column(
                 Modifier.verticalScroll(rememberScrollState()),
@@ -441,7 +443,7 @@ private fun EditListsDialog(
                         singleLine = true,
                         trailingIcon = {
                             IconButton(onClick = { onDelete(list) }) {
-                                Icon(Icons.Outlined.Delete, contentDescription = "„${list.name}“ löschen", tint = MaterialTheme.colorScheme.error)
+                                Icon(Icons.Outlined.Delete, contentDescription = str(R.string.cd_delete_named, list.name), tint = MaterialTheme.colorScheme.error)
                             }
                         },
                     )
@@ -457,17 +459,17 @@ private fun EditListsDialog(
                     }
                     onDismiss()
                 },
-            ) { Text("Fertig") }
+            ) { Text(str(R.string.focus_finish)) }
         },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Abbrechen") } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(str(R.string.action_cancel)) } },
     )
 }
 
 private fun emptyTextFor(section: String): String = when (section) {
-    "" -> "Etwas auf die Liste setzen"
-    Priority.LOW.label -> "Darf ruhig warten"
-    Priority.HIGH.label -> "Gerade brennt nichts"
-    else -> "Hier ist noch Platz"
+    "" -> str(R.string.empty_list)
+    Priority.LOW.label -> str(R.string.empty_low)
+    Priority.HIGH.label -> str(R.string.empty_high)
+    else -> str(R.string.empty_group)
 }
 
 /** Wichtigkeit ist auch ohne Lesen zu erkennen: an Farbe und Pfeil. */
@@ -487,7 +489,7 @@ private fun GroupHeader(
         else -> MaterialTheme.colorScheme.surfaceContainer to null
     }
     SectionHeader(
-        label = title.ifEmpty { "To-do" },
+        label = title.ifEmpty { str(R.string.todo) },
         count = count,
         expanded = expanded,
         onToggle = onToggle,
@@ -525,7 +527,7 @@ private fun SuggestionRow(idea: SuggestedItem, modifier: Modifier, onAdd: () -> 
                 .size(44.dp)
                 .clip(CircleShape)
                 .clickable(role = Role.Button, onClick = onAdd)
-                .semantics { contentDescription = "Übernehmen: ${idea.title}" },
+                .semantics { contentDescription = str(R.string.cd_accept_idea, idea.title) },
             contentAlignment = Alignment.Center,
         ) {
             SmallPlus(MaterialTheme.colorScheme.primary)
@@ -571,7 +573,7 @@ private fun ListMenu(
     val toggle = { target: MenuSection -> section = target.takeUnless { it == section } }
     val divider = @Composable { HorizontalDivider(Modifier.padding(horizontal = 16.dp), color = MaterialTheme.colorScheme.outline) }
     Box {
-        RoundIconButton(Icons.Filled.MoreVert, "Listen-Menü", onClick = { open = true })
+        RoundIconButton(Icons.Filled.MoreVert, str(R.string.cd_list_menu), onClick = { open = true })
         DropdownMenu(
             expanded = open,
             onDismissRequest = close,
@@ -580,7 +582,7 @@ private fun ListMenu(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
         ) {
             DropdownMenuItem(
-                text = { Text("Neue Liste erstellen", style = MaterialTheme.typography.bodyLarge) },
+                text = { Text(str(R.string.create_list), style = MaterialTheme.typography.bodyLarge) },
                 leadingIcon = { Icon(Icons.Outlined.AddCircleOutline, contentDescription = null) },
                 onClick = {
                     onNewList()
@@ -589,7 +591,7 @@ private fun ListMenu(
             )
             if (hasLists) {
                 DropdownMenuItem(
-                    text = { Text("Listen bearbeiten", style = MaterialTheme.typography.bodyLarge) },
+                    text = { Text(str(R.string.edit_lists), style = MaterialTheme.typography.bodyLarge) },
                     leadingIcon = { Icon(Icons.Outlined.Edit, contentDescription = null) },
                     onClick = {
                         onEditLists()
@@ -598,7 +600,7 @@ private fun ListMenu(
                 )
             }
             divider()
-            SectionItem("Gruppieren nach", section == MenuSection.GROUP) { toggle(MenuSection.GROUP) }
+            SectionItem(str(R.string.group_by), section == MenuSection.GROUP) { toggle(MenuSection.GROUP) }
             if (section == MenuSection.GROUP) {
                 Grouping.entries.forEach { option ->
                     OptionItem(option.label, groupingIcon(option), option == grouping) {
@@ -608,7 +610,7 @@ private fun ListMenu(
                 }
             }
             divider()
-            SectionItem("Sortieren nach", section == MenuSection.SORT) { toggle(MenuSection.SORT) }
+            SectionItem(str(R.string.sort_by), section == MenuSection.SORT) { toggle(MenuSection.SORT) }
             if (section == MenuSection.SORT) {
                 ListSort.entries.forEach { option ->
                     OptionItem(option.label, sortIcon(option), option == sort) {
@@ -618,10 +620,10 @@ private fun ListMenu(
                 }
             }
             divider()
-            SectionItem("Ansicht", section == MenuSection.VIEW) { toggle(MenuSection.VIEW) }
+            SectionItem(str(R.string.view), section == MenuSection.VIEW) { toggle(MenuSection.VIEW) }
             if (section == MenuSection.VIEW) {
-                OptionItem("Erledigte To-dos", null, showCompleted) { onShowCompleted(!showCompleted) }
-                OptionItem("Vorgeschlagene Aufgaben", null, showIdeas) { onShowIdeas(!showIdeas) }
+                OptionItem(str(R.string.show_done_todos), null, showCompleted) { onShowCompleted(!showCompleted) }
+                OptionItem(str(R.string.show_ideas), null, showIdeas) { onShowIdeas(!showIdeas) }
             }
         }
     }
@@ -648,7 +650,7 @@ private fun OptionItem(label: String, icon: ImageVector?, selected: Boolean, onC
         leadingIcon = {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Box(Modifier.size(24.dp)) {
-                    if (selected) Icon(Icons.Filled.Check, contentDescription = "Gewählt")
+                    if (selected) Icon(Icons.Filled.Check, contentDescription = str(R.string.cd_selected))
                 }
                 if (icon != null) Icon(icon, contentDescription = null)
             }
@@ -690,7 +692,7 @@ private fun SwipeToDelete(task: Task, onDelete: () -> Unit, modifier: Modifier, 
                     .padding(horizontal = 20.dp),
                 contentAlignment = Alignment.CenterEnd,
             ) {
-                Icon(Icons.Outlined.Delete, contentDescription = "Aufgabe „${task.title}“ löschen")
+                Icon(Icons.Outlined.Delete, contentDescription = str(R.string.cd_delete_task, task.title))
             }
         },
     ) { content() }

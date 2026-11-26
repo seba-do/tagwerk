@@ -4,6 +4,7 @@ import android.content.Context
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.serialization.json.Json
+import me.ttdrp.tagwerk.R
 import me.ttdrp.tagwerk.model.AppState
 import me.ttdrp.tagwerk.model.Daypart
 import me.ttdrp.tagwerk.model.EmojiGuess
@@ -12,6 +13,7 @@ import me.ttdrp.tagwerk.model.Priority
 import me.ttdrp.tagwerk.model.Subtask
 import me.ttdrp.tagwerk.model.Task
 import me.ttdrp.tagwerk.model.TodoList
+import me.ttdrp.tagwerk.model.str
 import me.ttdrp.tagwerk.widget.TodayWidgetRenderer
 import java.io.File
 import java.time.LocalDate
@@ -54,8 +56,8 @@ class Store(private val file: File, private val onChange: (AppState) -> Unit = {
     }
 
     private fun seeded(): AppState {
-        val inbox = TodoList(name = "Eingang")
-        val home = TodoList(name = "Zuhause")
+        val inbox = TodoList(name = str(R.string.seed_inbox))
+        val home = TodoList(name = str(R.string.seed_home))
         val today = LocalDate.now().toEpochDay()
         fun plan(title: String, part: Daypart, minutes: Int, subs: List<Subtask> = emptyList()) = Task(
             title = title,
@@ -81,18 +83,18 @@ class Store(private val file: File, private val onChange: (AppState) -> Unit = {
             lists = listOf(inbox, home),
             tasks = listOf(
                 plan(
-                    "Morgens in Gang kommen", Daypart.MORNING, 20,
+                    str(R.string.seed_morning), Daypart.MORNING, 20,
                     listOf(
-                        Subtask(title = "Zähne putzen", minutes = 5),
-                        Subtask(title = "Kaffee machen", minutes = 5),
-                        Subtask(title = "Tag kurz durchgehen", minutes = 10),
+                        Subtask(title = str(R.string.seed_brush), minutes = 5),
+                        Subtask(title = str(R.string.seed_coffee), minutes = 5),
+                        Subtask(title = str(R.string.seed_review), minutes = 10),
                     ),
                 ),
-                plan("Tiefe Arbeit am Projekt", Daypart.AFTERNOON, 45),
-                plan("Eine Runde laufen", Daypart.EVENING, 30),
-                todo("Rechnung bezahlen", inbox, 10, Priority.HIGH),
-                todo("Wäsche waschen", home, 15, Priority.MEDIUM),
-                todo("Keller aufräumen", home, 90, Priority.LOW),
+                plan(str(R.string.seed_deep_work), Daypart.AFTERNOON, 45),
+                plan(str(R.string.seed_run), Daypart.EVENING, 30),
+                todo(str(R.string.seed_bill), inbox, 10, Priority.HIGH),
+                todo(str(R.string.seed_laundry), home, 15, Priority.MEDIUM),
+                todo(str(R.string.seed_basement), home, 90, Priority.LOW),
             ),
         )
     }

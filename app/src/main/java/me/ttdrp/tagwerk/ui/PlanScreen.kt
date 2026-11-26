@@ -1,5 +1,7 @@
 package me.ttdrp.tagwerk.ui
 
+import me.ttdrp.tagwerk.R
+import me.ttdrp.tagwerk.model.str
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -171,12 +173,12 @@ fun PlanScreen(
                 enter = fadeIn(tween(150)) + scaleIn(tween(150), initialScale = 0.85f),
                 exit = fadeOut(tween(100)) + scaleOut(tween(100), targetScale = 0.85f),
             ) {
-                PillLabel("Heute", onClick = { dayValue = today.toEpochDay() })
+                PillLabel(str(R.string.today), onClick = { dayValue = today.toEpochDay() })
             }
-            RoundIconButton(Icons.Outlined.Settings, "Einstellungen", onOpenSettings)
+            RoundIconButton(Icons.Outlined.Settings, str(R.string.settings), onOpenSettings)
             RoundIconButton(
                 Icons.Filled.Add,
-                "Neue Aufgabe",
+                str(R.string.new_task),
                 onClick = { onNew(Task(title = "", kind = Kind.PLAN, epochDay = dayValue)) },
             )
         }
@@ -194,7 +196,7 @@ fun PlanScreen(
                 label = "day-title",
             ) { shown ->
                 Text(
-                    shown.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.GERMAN),
+                    shown.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault()),
                     style = MaterialTheme.typography.headlineLarge,
                     color = MaterialTheme.colorScheme.onBackground,
                 )
@@ -370,10 +372,10 @@ private fun entryKey(entry: DayEntry): Any = when (entry) {
 }
 
 private fun emptyPlanText(part: Daypart): String = when (part) {
-    Daypart.ANYTIME -> "Platz für alles ohne feste Zeit"
-    Daypart.MORNING -> "Der Morgen ist noch frei"
-    Daypart.AFTERNOON -> "Der Nachmittag ist noch frei"
-    Daypart.EVENING -> "Der Abend ist noch frei"
+    Daypart.ANYTIME -> str(R.string.empty_anytime)
+    Daypart.MORNING -> str(R.string.empty_morning)
+    Daypart.AFTERNOON -> str(R.string.empty_afternoon)
+    Daypart.EVENING -> str(R.string.empty_evening)
 }
 
 private fun openEvent(context: Context, event: CalendarEvent, onMissing: (String) -> Unit) {
@@ -383,7 +385,7 @@ private fun openEvent(context: Context, event: CalendarEvent, onMissing: (String
     try {
         context.startActivity(intent)
     } catch (_: ActivityNotFoundException) {
-        onMissing("Keine Kalender-App gefunden")
+        onMissing(str(R.string.no_calendar_app))
     }
 }
 
@@ -467,7 +469,7 @@ private fun MonthButton(day: LocalDate, onPick: (LocalDate) -> Unit) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            day.format(DateTimeFormatter.ofPattern("MMM yyyy", Locale.GERMAN)).uppercase(Locale.GERMAN),
+            day.format(DateTimeFormatter.ofPattern("MMM yyyy", Locale.getDefault())).uppercase(Locale.getDefault()),
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onBackground,
         )
@@ -517,7 +519,7 @@ private fun WeekDays(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
-                    date.dayOfWeek.getDisplayName(TextStyle.NARROW, Locale.GERMAN),
+                    date.dayOfWeek.getDisplayName(TextStyle.NARROW, Locale.getDefault()),
                     style = MaterialTheme.typography.labelSmall,
                     color = letter,
                     textAlign = TextAlign.Center,

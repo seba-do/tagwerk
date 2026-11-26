@@ -1,5 +1,6 @@
 package me.ttdrp.tagwerk.model
 
+import me.ttdrp.tagwerk.R
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -20,8 +21,6 @@ data class CalendarEvent(
 )
 
 object CalendarEvents {
-    const val ALL_DAY_LABEL = "Ganztägig"
-
     /**
      * Android speichert ganztägige Termine in UTC-Mitternacht. In Berlin begänne ein Termin vom 6. sonst
      * schon am Abend des 5. Deshalb zählt bei ihnen das UTC-Datum und nicht die lokale Zeit.
@@ -49,16 +48,16 @@ object CalendarEvents {
         minuteOn(event, day, zone)?.let(::daypartOf) ?: Daypart.ANYTIME
 
     fun timeLabel(event: CalendarEvent, day: LocalDate, zone: ZoneId): String {
-        if (event.allDay) return ALL_DAY_LABEL
+        if (event.allDay) return str(R.string.event_all_day)
         val dayEnd = startOf(day.plusDays(1), zone)
         val startsToday = event.beginMs >= startOf(day, zone)
         val endsToday = event.endMs <= dayEnd
         return when {
             startsToday && event.beginMs == event.endMs -> clockText(event.beginMs, zone)
             startsToday && endsToday -> "${clockText(event.beginMs, zone)} – ${clockText(event.endMs, zone)}"
-            startsToday -> "Ab ${clockText(event.beginMs, zone)}"
-            endsToday -> "Bis ${clockText(event.endMs, zone)}"
-            else -> ALL_DAY_LABEL
+            startsToday -> str(R.string.event_from, clockText(event.beginMs, zone))
+            endsToday -> str(R.string.event_until, clockText(event.endMs, zone))
+            else -> str(R.string.event_all_day)
         }
     }
 

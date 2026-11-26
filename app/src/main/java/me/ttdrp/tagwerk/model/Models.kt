@@ -1,28 +1,43 @@
 package me.ttdrp.tagwerk.model
 
+import androidx.annotation.StringRes
 import kotlinx.serialization.Serializable
+import me.ttdrp.tagwerk.R
 import java.util.UUID
 
 @Serializable
 enum class Kind { PLAN, TODO }
 
 @Serializable
-enum class Daypart(val label: String) {
-    ANYTIME("Jederzeit"),
-    MORNING("Morgen"),
-    AFTERNOON("Nachmittag"),
-    EVENING("Abend"),
+enum class Daypart(@StringRes private val labelRes: Int) {
+    ANYTIME(R.string.daypart_anytime),
+    MORNING(R.string.daypart_morning),
+    AFTERNOON(R.string.daypart_afternoon),
+    EVENING(R.string.daypart_evening),
+    ;
+
+    val label: String get() = str(labelRes)
 }
 
 @Serializable
-enum class Priority(val label: String) { HIGH("Wichtig"), MEDIUM("Normal"), LOW("Kann warten") }
+enum class Priority(@StringRes private val labelRes: Int) {
+    HIGH(R.string.priority_high),
+    MEDIUM(R.string.priority_medium),
+    LOW(R.string.priority_low),
+    ;
+
+    val label: String get() = str(labelRes)
+}
 
 @Serializable
-enum class Quadrant(val label: String) {
-    NOW("Sofort erledigen"),
-    SCHEDULE("Fest einplanen"),
-    DELEGATE("Abgeben"),
-    DROP("Streichen"),
+enum class Quadrant(@StringRes private val labelRes: Int) {
+    NOW(R.string.quadrant_now),
+    SCHEDULE(R.string.quadrant_schedule),
+    DELEGATE(R.string.quadrant_delegate),
+    DROP(R.string.quadrant_drop),
+    ;
+
+    val label: String get() = str(labelRes)
 }
 
 fun newId(): String = UUID.randomUUID().toString()
@@ -61,7 +76,7 @@ data class Task(
 ) {
     val isDone: Boolean get() = doneAtMs != null
 
-    /** Zeitgesteuerte Teilaufgaben bestimmen die Dauer, sonst gilt der eigene Wert. */
+    /** Timed steps determine the duration, otherwise the task's own value applies. */
     val effectiveMinutes: Int
         get() = subtasks.sumOf { it.minutes ?: 0 }.takeIf { it > 0 } ?: minutes
 }

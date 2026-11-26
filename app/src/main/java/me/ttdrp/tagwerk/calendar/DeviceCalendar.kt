@@ -10,6 +10,7 @@ import android.provider.CalendarContract
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import me.ttdrp.tagwerk.R
 import me.ttdrp.tagwerk.model.CalendarEvent
 import me.ttdrp.tagwerk.model.CalendarEvents
 import me.ttdrp.tagwerk.model.DeviceCalendarInfo
@@ -45,7 +46,7 @@ class DeviceCalendar(context: Context) {
             while (c.moveToNext()) {
                 found += DeviceCalendarInfo(
                     id = c.getLong(0),
-                    name = c.getString(1).orEmpty().ifBlank { "Kalender" },
+                    name = c.getString(1).orEmpty().ifBlank { app.getString(R.string.calendar_fallback_name) },
                     account = c.getString(2).orEmpty(),
                     color = c.getInt(3),
                 )
@@ -69,7 +70,7 @@ class DeviceCalendar(context: Context) {
                 val event = CalendarEvent(
                     eventId = c.getLong(0),
                     calendarId = calendarId,
-                    title = c.getString(2).orEmpty().ifBlank { "Ohne Titel" },
+                    title = c.getString(2).orEmpty().ifBlank { app.getString(R.string.event_untitled) },
                     beginMs = c.getLong(3),
                     endMs = c.getLong(4),
                     allDay = c.getInt(5) != 0,

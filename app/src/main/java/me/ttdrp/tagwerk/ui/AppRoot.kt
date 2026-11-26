@@ -1,5 +1,7 @@
 package me.ttdrp.tagwerk.ui
 
+import me.ttdrp.tagwerk.R
+import me.ttdrp.tagwerk.model.str
 import android.Manifest
 import android.app.NotificationManager
 import android.os.Build
@@ -72,11 +74,14 @@ import me.ttdrp.tagwerk.model.TaskReminders
 import java.time.ZoneId
 import java.time.LocalDate
 
-private enum class Tab(val label: String) {
-    TODOS("Listen"),
-    PLAN("Plan"),
-    FOCUS("Fokus"),
-    ASSISTANT("Assistent"),
+private enum class Tab(private val labelRes: Int) {
+    TODOS(R.string.tab_lists),
+    PLAN(R.string.tab_plan),
+    FOCUS(R.string.tab_focus),
+    ASSISTANT(R.string.tab_assistant),
+    ;
+
+    val label: String get() = str(labelRes)
 }
 
 /** Formular-Zustand: entweder eine bestehende Aufgabe oder eine neue Vorlage. */
@@ -149,8 +154,8 @@ fun AppRoot(vm: AppViewModel) {
     LaunchedEffect(undo) {
         val deleted = undo ?: return@LaunchedEffect
         val result = snackbar.showSnackbar(
-            "„${deleted.task.title}“ gelöscht",
-            actionLabel = "Rückgängig",
+            str(R.string.notice_deleted, deleted.task.title),
+            actionLabel = str(R.string.action_undo),
             duration = SnackbarDuration.Long,
         )
         if (result == SnackbarResult.ActionPerformed) vm.undoDelete(deleted) else vm.clearUndo()

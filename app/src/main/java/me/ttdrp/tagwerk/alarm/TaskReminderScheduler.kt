@@ -88,8 +88,8 @@ class TaskReminderScheduler(private val context: Context) {
             .setCategory(Notification.CATEGORY_REMINDER)
             .setAutoCancel(true)
             .setContentIntent(activityIntent(task.id, EXTRA_OPEN_TASK))
-            .addAction(action("Fokus starten", activityIntent(task.id, EXTRA_START_FOCUS)))
-            .addAction(action("Erledigt", doneIntent(task.id)))
+            .addAction(action(context.getString(R.string.action_start_focus), activityIntent(task.id, EXTRA_START_FOCUS)))
+            .addAction(action(context.getString(R.string.action_done), doneIntent(task.id)))
             .build()
         // Pro Aufgabe eine Meldung: Die Startmeldung ersetzt die Vorwarnung.
         notifications.notify(task.id, NOTIFICATION_ID, notification)
@@ -128,8 +128,8 @@ class TaskReminderScheduler(private val context: Context) {
 
     private fun canScheduleExact() = Build.VERSION.SDK_INT < Build.VERSION_CODES.S || alarms.canScheduleExactAlarms()
 
-    private fun channel() = NotificationChannel(CHANNEL_ID, "Aufgaben", NotificationManager.IMPORTANCE_HIGH).apply {
-        description = "Erinnert vor und zum Start von Aufgaben mit fester Uhrzeit"
+    private fun channel() = NotificationChannel(CHANNEL_ID, context.getString(R.string.channel_tasks), NotificationManager.IMPORTANCE_HIGH).apply {
+        description = context.getString(R.string.channel_tasks_description)
         enableVibration(true)
     }
 

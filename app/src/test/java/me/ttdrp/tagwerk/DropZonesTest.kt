@@ -15,6 +15,10 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class DropZonesTest {
+    init {
+        TestStrings.install()
+    }
+
     private val rows = listOf(
         Reorder.Row(0, 40, null, Daypart.MORNING),
         Reorder.Row(40, 100, "a", Daypart.MORNING),

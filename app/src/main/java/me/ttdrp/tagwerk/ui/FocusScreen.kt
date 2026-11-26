@@ -1,5 +1,7 @@
 package me.ttdrp.tagwerk.ui
 
+import me.ttdrp.tagwerk.R
+import me.ttdrp.tagwerk.model.str
 import android.app.NotificationManager
 import android.content.Intent
 import android.provider.Settings
@@ -126,13 +128,13 @@ private fun PickFocus(state: AppState, vm: AppViewModel, onStart: (Task) -> Unit
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            "Such dir eine Sache aus",
+            str(R.string.focus_pick_title),
             style = MaterialTheme.typography.headlineLarge,
             color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center,
         )
         Text(
-            "Der Rest kann warten.",
+            str(R.string.focus_pick_subtitle),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onBackground,
         )
@@ -159,11 +161,11 @@ private fun PickFocus(state: AppState, vm: AppViewModel, onStart: (Task) -> Unit
         Spacer(Modifier.size(24.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             listOf(10, 25, 45).forEach { minutes ->
-                PillLabel("$minutes Min", container = MaterialTheme.colorScheme.surfaceVariant, onClick = { vm.startQuickFocus(minutes) })
+                PillLabel(str(R.string.focus_quick_minutes, minutes), container = MaterialTheme.colorScheme.surfaceVariant, onClick = { vm.startQuickFocus(minutes) })
             }
         }
         if (candidates.isNotEmpty()) {
-            Box(Modifier.fillMaxWidth()) { SectionPill("Aus dem heutigen Plan") }
+            Box(Modifier.fillMaxWidth()) { SectionPill(str(R.string.focus_from_today)) }
             candidates.forEach { item ->
                 TaskCard(task = item, onClick = { onStart(item) }, onToggle = { vm.toggleDone(item) })
             }
@@ -190,7 +192,7 @@ private fun ActiveFocus(session: FocusSession, task: Task, vm: AppViewModel) {
     val complete = {
         feedback.taskDone(ringCenter)
         vm.finishFocus()
-        vm.notify("Geschafft: ${task.title}")
+        vm.notify(str(R.string.notice_finished, task.title))
     }
 
     Column(
@@ -247,34 +249,34 @@ private fun ActiveFocus(session: FocusSession, task: Task, vm: AppViewModel) {
         )
         Row(horizontalArrangement = Arrangement.spacedBy(16.dp), verticalAlignment = Alignment.CenterVertically) {
             if (paused) {
-                Text("Pausiert", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
+                Text(str(R.string.focus_paused), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
             }
             InversePill(
                 text = null,
                 icon = if (paused) Icons.Filled.PlayArrow else Icons.Filled.Pause,
                 onClick = { if (paused) vm.resumeFocus() else vm.pauseFocus() },
-                description = if (paused) "Weiter" else "Pause",
+                description = str(if (paused) R.string.action_resume else R.string.action_pause),
                 modifier = Modifier.size(width = 91.dp, height = 41.dp),
             )
         }
         Spacer(Modifier.size(14.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            PillLabel("+5 Min", onClick = { vm.extendFocus(5) })
-            PillLabel("Fertig", onClick = complete)
-            PillLabel("Abbrechen", onClick = { vm.stopFocus() })
+            PillLabel(str(R.string.focus_plus_five), onClick = { vm.extendFocus(5) })
+            PillLabel(str(R.string.focus_finish), onClick = complete)
+            PillLabel(str(R.string.action_cancel), onClick = { vm.stopFocus() })
         }
 
         // Wird mit dem Timer laufend neu geprüft, also auch nach der Rückkehr aus den Einstellungen.
         val context = LocalContext.current
         if (!context.getSystemService(NotificationManager::class.java).areNotificationsEnabled()) {
             Text(
-                "Benachrichtigungen sind aus. Der Timer läuft, meldet sich bei geschlossener App aber nicht.",
+                str(R.string.focus_notifications_off),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(top = 14.dp, bottom = 8.dp),
             )
-            PillLabel("Benachrichtigungen einschalten", onClick = {
+            PillLabel(str(R.string.focus_enable_notifications), onClick = {
                 context.startActivity(
                     Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
                         .putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName),
@@ -373,7 +375,7 @@ private fun FocusRing(
         modifier = Modifier
             .size(RING_SIZE)
             .onGloballyPositioned { onCenter(it.boundsInRoot().center) }
-            .semantics { contentDescription = "Fortschritt. Am Ring drehen schließt die Aufgabe ab." }
+            .semantics { contentDescription = str(R.string.cd_focus_ring) }
             .pointerInput(Unit) {
                 var last = 0.0
                 var current = 0f

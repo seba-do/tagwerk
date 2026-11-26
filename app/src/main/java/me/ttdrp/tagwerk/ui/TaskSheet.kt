@@ -1,5 +1,7 @@
 package me.ttdrp.tagwerk.ui
 
+import me.ttdrp.tagwerk.R
+import me.ttdrp.tagwerk.model.str
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import androidx.compose.animation.core.Animatable
@@ -51,6 +53,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import java.time.ZoneId
 import me.ttdrp.tagwerk.model.label
+import me.ttdrp.tagwerk.model.shortDayName
 import me.ttdrp.tagwerk.model.RepeatRule
 import me.ttdrp.tagwerk.model.Repeat
 import me.ttdrp.tagwerk.model.Recurrence
@@ -58,6 +61,7 @@ import androidx.compose.material.icons.outlined.EventBusy
 import androidx.compose.material.icons.outlined.Repeat
 import java.util.Locale
 import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import me.ttdrp.tagwerk.model.shownEmoji
 import me.ttdrp.tagwerk.model.StepEdits
 import androidx.compose.ui.text.style.TextAlign
@@ -298,18 +302,18 @@ fun TaskSheet(
                     when {
                         isNew -> Unit
                         kind == Kind.TODO -> Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            RoundFormButton(Icons.Outlined.Delete, "Löschen", colors.surfaceContainerHigh, colors.error, delete)
+                            RoundFormButton(Icons.Outlined.Delete, str(R.string.action_delete), colors.surfaceContainerHigh, colors.error, delete)
                             if (!original.isDone) {
-                                RoundFormButton(Icons.Filled.PlayArrow, "Fokus starten", colors.surfaceContainerHigh, colors.onSurface) {
+                                RoundFormButton(Icons.Filled.PlayArrow, str(R.string.action_start_focus), colors.surfaceContainerHigh, colors.onSurface) {
                                     if (title.isNotBlank()) startFocus()
                                 }
                             }
                         }
                         else -> Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
                             if (!original.isDone) {
-                                InversePill("Fokus starten", Icons.Filled.PlayArrow, enabled = title.isNotBlank(), onClick = startFocus)
+                                InversePill(str(R.string.action_start_focus), Icons.Filled.PlayArrow, enabled = title.isNotBlank(), onClick = startFocus)
                             }
-                            PillLabel("Löschen", container = colors.surfaceVariant, onClick = delete)
+                            PillLabel(str(R.string.action_delete), container = colors.surfaceVariant, onClick = delete)
                         }
                     }
                 },
@@ -352,7 +356,7 @@ fun TaskSheet(
     if (askScope) {
         // Eine neue Regel kann nicht für einen einzelnen Termin gelten.
         ScopeDialog(
-            title = "Änderung speichern für",
+            title = str(R.string.scope_save_title),
             allowThis = repeat == originalRepeat,
             onDismiss = { askScope = false },
             onPick = { scope ->
@@ -365,7 +369,7 @@ fun TaskSheet(
 
     if (askDeleteScope) {
         ScopeDialog(
-            title = "Löschen",
+            title = str(R.string.action_delete),
             allowThis = true,
             onDismiss = { askDeleteScope = false },
             onPick = { scope ->
@@ -383,15 +387,15 @@ fun TaskSheet(
                 scope.launch { sheetState.show() }
             },
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            title = { Text("Änderungen verwerfen?") },
+            title = { Text(str(R.string.discard_changes_title)) },
             confirmButton = {
-                TextButton(onClick = onDismiss) { Text("Verwerfen", color = MaterialTheme.colorScheme.error) }
+                TextButton(onClick = onDismiss) { Text(str(R.string.assistant_reject), color = MaterialTheme.colorScheme.error) }
             },
             dismissButton = {
                 TextButton(onClick = {
                     askDiscard = false
                     scope.launch { sheetState.show() }
-                }) { Text("Weiter bearbeiten") }
+                }) { Text(str(R.string.keep_editing)) }
             },
         )
     }
@@ -437,7 +441,7 @@ private fun QuickAdd(
                 modifier = Modifier
                     .weight(1f)
                     .focusRequester(focus)
-                    .semantics { contentDescription = "Titel" },
+                    .semantics { contentDescription = str(R.string.cd_title) },
                 singleLine = true,
                 textStyle = titleStyle,
                 cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
@@ -457,7 +461,7 @@ private fun QuickAdd(
                         .clip(CircleShape)
                         .background(MaterialTheme.colorScheme.primary)
                         .clickable(role = Role.Button, onClick = onSave)
-                        .semantics { contentDescription = "Anlegen" },
+                        .semantics { contentDescription = str(R.string.action_create) },
                     contentAlignment = Alignment.Center,
                 ) {
                     Icon(Icons.Filled.Check, contentDescription = null, tint = MaterialTheme.colorScheme.onPrimary)
@@ -485,7 +489,7 @@ private fun QuickAdd(
                     )
                 }
             } else {
-                MenuChip(label = listName ?: "Liste", icon = Icons.Outlined.Checklist, options = lists)
+                MenuChip(label = listName ?: str(R.string.place_list), icon = Icons.Outlined.Checklist, options = lists)
             }
             MenuChip(
                 label = durationLabel(minutes),
@@ -500,7 +504,7 @@ private fun QuickAdd(
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.surfaceVariant)
                     .clickable(role = Role.Button, onClick = onMore)
-                    .semantics { contentDescription = "Mehr Optionen" },
+                    .semantics { contentDescription = str(R.string.cd_more_options) },
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(Icons.Filled.MoreHoriz, contentDescription = null, tint = MaterialTheme.colorScheme.onSurface)
@@ -565,12 +569,12 @@ private fun FullForm(
             Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            RoundFormButton(Icons.Filled.Close, "Schließen", colors.surface, colors.onSurface, onClose)
+            RoundFormButton(Icons.Filled.Close, str(R.string.action_close), colors.surface, colors.onSurface, onClose)
             Text(
                 when {
-                    !isNew -> "${kindNoun(kind)} bearbeiten"
-                    kind == Kind.TODO -> "Neues To-do"
-                    else -> "Neue Aufgabe"
+                    !isNew -> editTitle(kind)
+                    kind == Kind.TODO -> str(R.string.new_todo)
+                    else -> str(R.string.new_task)
                 },
                 Modifier.weight(1f),
                 style = MaterialTheme.typography.titleMedium,
@@ -580,7 +584,7 @@ private fun FullForm(
             val valid = title.isNotBlank()
             RoundFormButton(
                 Icons.Filled.Check,
-                if (isNew) "Anlegen" else "Speichern",
+                str(if (isNew) R.string.action_create else R.string.action_save),
                 if (valid) colors.primary else colors.surfaceContainerHigh,
                 if (valid) colors.onPrimary else colors.onSurfaceVariant,
                 onSave,
@@ -598,13 +602,13 @@ private fun FullForm(
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     val style = MaterialTheme.typography.bodyLarge.copy(color = colors.onSurface)
                     if (isTodo) {
-                        FormField(label = "Aufgabenname", icon = null, modifier = Modifier.weight(1f)) {
+                        FormField(label = str(R.string.field_task_name), icon = null, modifier = Modifier.weight(1f)) {
                             BasicTextField(
                                 value = title,
                                 onValueChange = onTitle,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .semantics { contentDescription = "Titel" },
+                                    .semantics { contentDescription = str(R.string.cd_title) },
                                 singleLine = true,
                                 textStyle = style.copy(fontFamily = SerifFamily, fontSize = 20.sp),
                                 cursorBrush = SolidColor(colors.primary),
@@ -621,14 +625,14 @@ private fun FullForm(
                                 .background(colors.surface)
                                 .border(1.dp, colors.surfaceContainerHigh, FieldShape)
                                 .padding(horizontal = 16.dp, vertical = 15.dp)
-                                .semantics { contentDescription = "Titel" },
+                                .semantics { contentDescription = str(R.string.cd_title) },
                             singleLine = true,
                             textStyle = style,
                             cursorBrush = SolidColor(colors.primary),
                             keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
                             decorationBox = { field ->
                                 Box {
-                                    if (title.isEmpty()) Text("Name der Aufgabe", style = style)
+                                    if (title.isEmpty()) Text(str(R.string.field_task_name_placeholder), style = style)
                                     field()
                                 }
                             },
@@ -638,14 +642,14 @@ private fun FullForm(
                         Modifier
                             .clip(CircleShape)
                             .clickable(role = Role.Button, onClick = onEmojiClick)
-                            .semantics { contentDescription = "Emoji und Farbe" },
+                            .semantics { contentDescription = str(R.string.cd_emoji_color) },
                     ) {
                         EmojiBadge(emoji.orEmpty(), tint, size = 40.dp, color = color, neutral = color == null && !isTodo)
                     }
                 }
                 if (titleMissing) {
                     Text(
-                        "Bitte gib einen Namen ein",
+                        str(R.string.error_name_missing),
                         style = MaterialTheme.typography.bodySmall,
                         color = colors.error,
                         modifier = Modifier.padding(start = 14.dp, top = 5.dp),
@@ -655,16 +659,16 @@ private fun FullForm(
 
             if (showPlace) {
                 FormDropdown(
-                    label = "Ort",
-                    value = if (kind == Kind.PLAN) "Im Plan" else "Auf der Liste",
+                    label = str(R.string.field_place),
+                    value = str(if (kind == Kind.PLAN) R.string.place_in_plan else R.string.place_on_list),
                     icon = if (kind == Kind.PLAN) Icons.Outlined.EventAvailable else Icons.Outlined.Checklist,
-                    options = listOf("Im Plan" to { onKind(Kind.PLAN) }, "Auf der Liste" to { onKind(Kind.TODO) }),
+                    options = listOf(str(R.string.place_in_plan) to { onKind(Kind.PLAN) }, str(R.string.place_on_list) to { onKind(Kind.TODO) }),
                 )
             }
 
             if (kind == Kind.PLAN) {
                 FormDropdown(
-                    label = "Tageszeit",
+                    label = str(R.string.field_daypart),
                     value = if (startMinute != null) AT_TIME else daypart.label,
                     icon = if (startMinute != null) Icons.Outlined.Schedule else daypartIcon(daypart),
                     options = Daypart.entries.map { part -> part.label to { onDaypart(part) } } +
@@ -672,7 +676,7 @@ private fun FullForm(
                 )
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     FormField(
-                        label = "Datum",
+                        label = str(R.string.field_date),
                         icon = Icons.Outlined.CalendarMonth,
                         modifier = Modifier.weight(1f),
                         onClick = {
@@ -685,11 +689,11 @@ private fun FullForm(
                             ).show()
                         },
                     ) {
-                        FieldText(date.format(DateTimeFormatter.ofPattern("d. MMM yyyy", Locale.GERMAN)))
+                        FieldText(date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
                     }
                     if (startMinute != null) {
                         FormField(
-                            label = "Uhrzeit",
+                            label = str(R.string.field_time),
                             icon = Icons.Outlined.Schedule,
                             modifier = Modifier.weight(0.7f),
                             onClick = { pickTime(startMinute) },
@@ -702,7 +706,7 @@ private fun FullForm(
                 }
                 if (startMinute != null) DurationField(minutes, steps, timers, onMinutes, Modifier.fillMaxWidth())
                 FormDropdown(
-                    label = "Wiederholen",
+                    label = str(R.string.field_repeat),
                     value = repeat?.label ?: NO_REPEAT,
                     icon = Icons.Outlined.Repeat,
                     options = repeatOptions,
@@ -710,7 +714,7 @@ private fun FullForm(
                 if (repeat != null) {
                     val until = repeat.untilEpochDay?.let(LocalDate::ofEpochDay)
                     FormField(
-                        label = "Letzter Tag",
+                        label = str(R.string.field_last_day),
                         icon = Icons.Outlined.EventBusy,
                         onClick = {
                             val initial = until ?: date.plusMonths(1)
@@ -726,7 +730,7 @@ private fun FullForm(
                             {
                                 Icon(
                                     Icons.Filled.Close,
-                                    contentDescription = "Ende entfernen",
+                                    contentDescription = str(R.string.cd_remove_end),
                                     tint = colors.onSurface,
                                     modifier = Modifier
                                         .size(22.dp)
@@ -736,11 +740,11 @@ private fun FullForm(
                             }
                         },
                     ) {
-                        FieldText(until?.format(DateTimeFormatter.ofPattern("d. MMM yyyy", Locale.GERMAN)) ?: "Ohne Ende")
+                        FieldText(until?.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)) ?: str(R.string.no_end))
                     }
                 }
             } else {
-                FormDropdown(label = "Liste", value = listName ?: "Liste", icon = null, options = lists)
+                FormDropdown(label = str(R.string.place_list), value = listName ?: str(R.string.place_list), icon = null, options = lists)
                 DurationField(minutes, steps, timers, onMinutes, Modifier.fillMaxWidth())
             }
 
@@ -755,13 +759,13 @@ private fun FullForm(
                         .fillMaxWidth()
                         .heightIn(min = 88.dp)
                         .padding(16.dp)
-                        .semantics { contentDescription = "Notizen" },
+                        .semantics { contentDescription = str(R.string.cd_notes) },
                     textStyle = style,
                     cursorBrush = SolidColor(colors.primary),
                     keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
                     decorationBox = { field ->
                         Box {
-                            if (notes.isEmpty()) Text("Schreibe deine Notizen...", style = style)
+                            if (notes.isEmpty()) Text(str(R.string.notes_placeholder), style = style)
                             field()
                         }
                     },
@@ -778,10 +782,9 @@ private fun FullForm(
 }
 
 private val FieldShape = RoundedCornerShape(24.dp)
-private const val AT_TIME = "Zu einer Uhrzeit"
+private val AT_TIME get() = str(R.string.at_time)
 private val DURATIONS = listOf(5, 15, 30, 45, 60, 90)
-private const val NO_REPEAT = "Nicht wiederholen"
-private val WEEKDAY_LETTERS = listOf("Mo", "Di", "Mi", "Do", "Fr", "Sa", "So")
+private val NO_REPEAT get() = str(R.string.no_repeat)
 
 private fun repeatOptions(onPick: (Repeat?) -> Unit, onCustom: () -> Unit): List<Pair<String, () -> Unit>> =
     listOf<Pair<String, () -> Unit>>(NO_REPEAT to { onPick(null) }) +
@@ -808,14 +811,14 @@ private fun CustomRepeatDialog(
             Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
                 // Alle sieben Tage passen nebeneinander: Der heute gewählte Tag darf nicht aus dem Bild rutschen.
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    WEEKDAY_LETTERS.forEachIndexed { index, name ->
-                        val value = index + 1
+                    (1..7).forEach { value ->
+                        val name = shortDayName(value)
                         WeekdayToggle(name, value in days) { days = if (value in days) days - value else days + value }
                     }
                 }
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     (1..4).forEach { n ->
-                        ChoicePill(if (n == 1) "Jede Woche" else "Alle $n", weeks == n, { weeks = n })
+                        ChoicePill(if (n == 1) str(R.string.every_week) else str(R.string.every_n, n), weeks == n, { weeks = n })
                     }
                 }
             }
@@ -823,9 +826,9 @@ private fun CustomRepeatDialog(
         confirmButton = {
             TextButton(enabled = days.isNotEmpty(), onClick = {
                 onConfirm(Repeat(RepeatRule.CUSTOM, weekdays = days.sorted(), everyWeeks = weeks))
-            }) { Text("Übernehmen") }
+            }) { Text(str(R.string.assistant_accept)) }
         },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Abbrechen") } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(str(R.string.action_cancel)) } },
     )
 }
 
@@ -862,12 +865,12 @@ internal fun ScopeDialog(
         title = { Text(title) },
         text = {
             Column {
-                if (allowThis) ScopeOption("Nur dieser Termin") { onPick(Recurrence.EditScope.THIS) }
-                ScopeOption("Dieser und alle folgenden") { onPick(Recurrence.EditScope.FOLLOWING) }
-                ScopeOption("Alle Termine") { onPick(Recurrence.EditScope.ALL) }
+                if (allowThis) ScopeOption(str(R.string.scope_this)) { onPick(Recurrence.EditScope.THIS) }
+                ScopeOption(str(R.string.scope_following)) { onPick(Recurrence.EditScope.FOLLOWING) }
+                ScopeOption(str(R.string.scope_all)) { onPick(Recurrence.EditScope.ALL) }
             }
         },
-        confirmButton = { TextButton(onClick = onDismiss) { Text("Abbrechen") } },
+        confirmButton = { TextButton(onClick = onDismiss) { Text(str(R.string.action_cancel)) } },
     )
 }
 
@@ -1009,7 +1012,7 @@ private fun DurationField(
     modifier: Modifier,
 ) {
     val colors = MaterialTheme.colorScheme
-    FormField(label = "Dauer (Min)", icon = Icons.Outlined.Schedule, modifier = modifier, enabled = !timers) {
+    FormField(label = str(R.string.field_duration), icon = Icons.Outlined.Schedule, modifier = modifier, enabled = !timers) {
         if (timers) {
             FieldText(steps.sumOf { it.minutes ?: 0 }.toString(), enabled = false)
         } else {
@@ -1026,16 +1029,16 @@ private fun DurationField(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .semantics { contentDescription = "Dauer in Minuten" },
+                    .semantics { contentDescription = str(R.string.cd_duration_minutes) },
             )
         }
     }
 }
 
 private fun durationLabel(minutes: Int): String = when {
-    minutes < 60 -> "${minutes}M"
-    minutes % 60 == 0 -> "${minutes / 60}Std"
-    else -> "${minutes / 60}Std ${minutes % 60}M"
+    minutes < 60 -> str(R.string.duration_chip_minutes, minutes)
+    minutes % 60 == 0 -> str(R.string.duration_chip_hours, minutes / 60)
+    else -> str(R.string.duration_chip_hours_minutes, minutes / 60, minutes % 60)
 }
 
 @Composable
@@ -1065,7 +1068,7 @@ private fun MenuChip(label: String, icon: ImageVector? = null, options: List<Pai
 /** Blendet zwischen Beispielen über, damit das leere Feld zeigt, was alles geht. */
 @Composable
 private fun RotatingPlaceholder(animate: Boolean, style: TextStyle) {
-    val examples = listOf("Was möchtest du tun?", "Wäsche aufhängen", "Zahnarzt anrufen", "Kurz durchatmen")
+    val examples = listOf(R.string.example_0, R.string.example_1, R.string.example_2, R.string.example_3).map { str(it) }
     var index by remember { mutableStateOf(0) }
     val alpha = remember { Animatable(1f) }
     LaunchedEffect(animate) {

@@ -1,0 +1,327 @@
+# App and widgets
+app_name | Tagwerk | Tagwerk
+widget_small_label | Tagwerk: Next task | Tagwerk: Nächste Aufgabe
+widget_small_description | Shows today's next task and starts it. | Zeigt die nächste Aufgabe von heute und startet sie.
+widget_wide_label | Tagwerk: Task with steps | Tagwerk: Aufgabe mit Schritten
+widget_wide_description | Shows today's next task and lets you check off its steps. | Zeigt die nächste Aufgabe von heute und lässt dich ihre Schritte abhaken.
+
+# Model
+daypart_anytime | Anytime | Jederzeit
+daypart_morning | Morning | Morgen
+daypart_afternoon | Afternoon | Nachmittag
+daypart_evening | Evening | Abend
+priority_high | Important | Wichtig
+priority_medium | Normal | Normal
+priority_low | Can wait | Kann warten
+quadrant_now | Do now | Sofort erledigen
+quadrant_schedule | Schedule | Fest einplanen
+quadrant_delegate | Delegate | Abgeben
+quadrant_drop | Drop | Streichen
+grouping_none | No grouping | Keine Gruppierung
+grouping_priority | Priority | Priorität
+grouping_size | Task size | Aufgabengröße
+grouping_quadrant | Eisenhower | Eisenhower
+size_tiny | Under 15 minutes | Unter 15 Minuten
+size_short | 15 to 30 minutes | 15 bis 30 Minuten
+size_medium | 30 to 60 minutes | 30 bis 60 Minuten
+size_long | Over an hour | Über eine Stunde
+sort_manual | Manual order | Manuelle Reihenfolge
+sort_alphabetical | Alphabetical | Alphabetisch
+sort_duration | Duration | Dauer
+repeat_daily | Daily | Täglich
+repeat_weekdays | Weekdays | Werktags
+repeat_weekends | Weekends | Am Wochenende
+repeat_weekly | Weekly | Wöchentlich
+repeat_biweekly | Every two weeks | Alle zwei Wochen
+repeat_monthly | Monthly | Monatlich
+repeat_yearly | Yearly | Jährlich
+repeat_custom | Custom rhythm | Eigener Rhythmus
+repeat_every_weeks | %1$s · every %2$d weeks | %1$s · alle %2$d Wochen
+day_short_mon | Mon | Mo
+day_short_tue | Tue | Di
+day_short_wed | Wed | Mi
+day_short_thu | Thu | Do
+day_short_fri | Fri | Fr
+day_short_sat | Sat | Sa
+day_short_sun | Sun | So
+alarm_time_up | The planned time is up. | Die geplante Zeit ist um.
+alarm_steps_done | All steps are done. The extra time is still running. | Alle Schritte sind durch. Die Zusatzzeit läuft noch.
+alarm_next_step | Up next: %1$s | Weiter mit: %1$s
+reminder_before_one | Starts in 1 minute, at %1$s. | Startet in 1 Minute, um %1$s.
+reminder_before | Starts in %1$d minutes, at %2$s. | Startet in %1$d Minuten, um %2$s.
+reminder_start | Starting now. Planned until %1$s. | Geht jetzt los. Geplant bis %1$s.
+event_all_day | All day | Ganztägig
+event_from | From %1$s | Ab %1$s
+event_until | Until %1$s | Bis %1$s
+emoji_cat_smileys | Smileys and emotions | Smileys und Gefühle
+emoji_cat_people | People | Menschen
+emoji_cat_nature | Animals and nature | Tiere und Natur
+emoji_cat_food | Food and drink | Essen und Trinken
+emoji_cat_travel | Travel and places | Reisen und Orte
+emoji_cat_activities | Activities | Aktivitäten
+emoji_cat_objects | Objects | Gegenstände
+emoji_cat_symbols | Symbols | Symbole
+emoji_cat_flags | Flags | Flaggen
+
+# Widgets, notifications, calendar
+widget_start | Start ▶︎ | Start ▶︎
+widget_extend | Five more minutes | Fünf Minuten mehr
+widget_check_step | Check off step | Schritt abhaken
+widget_add_step | Add a step | Teilaufgabe hinzufügen
+widget_all_done | All done | Alles geschafft
+action_done | Done | Erledigt
+action_resume | Resume | Weiter
+action_pause | Pause | Pause
+action_start_focus | Start focus | Fokus starten
+channel_tasks | Tasks | Aufgaben
+channel_tasks_description | Reminds you before and at the start of tasks with a fixed time | Erinnert vor und zum Start von Aufgaben mit fester Uhrzeit
+channel_focus | Focus timer | Fokus-Timer
+channel_focus_description | Announces the end of the timer and the switch to the next step | Meldet das Ende des Timers und den Wechsel zum nächsten Schritt
+calendar_fallback_name | Calendar | Kalender
+event_untitled | Untitled | Ohne Titel
+
+# Assistant
+model_opus | Claude Opus 5.5 (most capable) | Claude Opus 5.5 (am stärksten)
+model_sonnet | Claude Sonnet 5.5 (balanced) | Claude Sonnet 5.5 (ausgewogen)
+model_haiku | Claude Haiku 5.5 (cheapest) | Claude Haiku 5.5 (am günstigsten)
+ai_error_refused | The model declined this request. Please phrase it differently. | Das Modell hat diese Anfrage abgelehnt. Formuliere sie bitte anders.
+ai_error_unauthorized | The API key was rejected. Check it in the settings. | Der API-Key wurde abgelehnt. Prüfe ihn in den Einstellungen.
+ai_error_permission | This API key may not use the selected model. | Dieser API-Key darf das gewählte Modell nicht nutzen.
+ai_error_rate_limit | Too many requests or quota used up. Try again in a moment. | Zu viele Anfragen oder Kontingent aufgebraucht. Versuche es gleich noch einmal.
+ai_error_offline | No connection to the Claude API. Check your internet connection. | Keine Verbindung zur Claude API. Prüfe deine Internetverbindung.
+ai_error_service | The Claude API reports an error (%1$d). | Die Claude API meldet einen Fehler (%1$d).
+place_list | List | Liste
+place_plan | Plan | Plan
+place_tomorrow | tomorrow | morgen
+place_date_pattern | EEE, MMM d | EEE d.M.
+
+# Notices
+notice_copied | “%1$s” copied | „%1$s“ kopiert
+notice_rescheduled | “%1$s” planned for %2$s | „%1$s“ geplant für %2$s
+notice_rescheduled_pattern | EEEE, MMMM d | EEEE, d. MMMM
+notice_scheduled_today | “%1$s” is now in today's plan | „%1$s“ steht jetzt im heutigen Plan
+notice_moved_to_list | “%1$s” is now on “%2$s” | „%1$s“ liegt jetzt auf „%2$s“
+quick_focus_title | Focus time | Fokuszeit
+notice_key_works | The key works. | Der Schlüssel funktioniert.
+notice_key_missing | Add your API key in the settings first. | Hinterlege zuerst deinen API-Key in den Einstellungen.
+notice_request_failed | The request failed. | Die Anfrage ist fehlgeschlagen.
+notice_accepted_one | 1 task added | 1 Aufgabe übernommen
+notice_accepted | %1$d tasks added | %1$d Aufgaben übernommen
+
+# Sample data on first start
+seed_inbox | Inbox | Eingang
+seed_home | Home | Zuhause
+seed_morning | Get going in the morning | Morgens in Gang kommen
+seed_brush | Brush teeth | Zähne putzen
+seed_coffee | Make coffee | Kaffee machen
+seed_review | Go over the day | Tag kurz durchgehen
+seed_deep_work | Deep work on the project | Tiefe Arbeit am Projekt
+seed_run | Go for a run | Eine Runde laufen
+seed_bill | Pay the invoice | Rechnung bezahlen
+seed_laundry | Do the laundry | Wäsche waschen
+seed_basement | Tidy up the basement | Keller aufräumen
+
+# ui/Common.kt
+duration_minutes | %1$d min | %1$dmin
+duration_hours | %1$d h | %1$dstd
+duration_hours_minutes | %1$d h %2$d min | %1$dstd %2$dmin
+cd_new_in | New in %1$s | Neu in %1$s
+cd_calendar_event | Calendar event | Kalendertermin
+cd_hide_steps | Hide steps | Schritte ausblenden
+cd_show_steps | Show steps | Schritte anzeigen
+cd_reopen | Reopen: %1$s | Wieder öffnen: %1$s
+cd_check_off | Check off: %1$s | Abhaken: %1$s
+done_header | Done (%1$d) | Erledigt (%1$d)
+cd_hide_done | Hide done tasks | Erledigte ausblenden
+cd_show_done | Show done tasks | Erledigte anzeigen
+drop_to_check_off | Drop here to check off | Zum Abhaken hier ablegen
+
+# ui/AppRoot.kt
+tab_lists | Lists | Listen
+tab_plan | Plan | Plan
+tab_focus | Focus | Fokus
+tab_assistant | Assistant | Assistent
+notice_deleted | “%1$s” deleted | „%1$s“ gelöscht
+action_undo | Undo | Rückgängig
+
+# ui/TaskMenu.kt
+action_delete | Delete | Löschen
+menu_duplicate | Make a copy | Kopie erstellen
+menu_move_to_list | Move to list | Zur Liste verschieben
+menu_schedule | Schedule task | Aufgabe planen
+menu_reschedule | Reschedule task | Aufgabe neu terminieren
+menu_tomorrow | Move to tomorrow | Für morgen neu planen
+menu_break_down | Suggest a breakdown | Aufschlüsselung vorschlagen
+menu_start | Start task | Aufgabe starten
+menu_edit | Edit task | Aufgabe bearbeiten
+menu_delete | Delete task | Aufgabe löschen
+edit_todo | Edit to-do | To-do bearbeiten
+edit_task | Edit task | Aufgabe bearbeiten
+
+# ui/PlanScreen.kt
+today | Today | Heute
+settings | Settings | Einstellungen
+new_task | New task | Neue Aufgabe
+empty_anytime | Room for everything without a fixed time | Platz für alles ohne feste Zeit
+empty_morning | The morning is still free | Der Morgen ist noch frei
+empty_afternoon | The afternoon is still free | Der Nachmittag ist noch frei
+empty_evening | The evening is still free | Der Abend ist noch frei
+no_calendar_app | No calendar app found | Keine Kalender-App gefunden
+
+# ui/FocusScreen.kt
+focus_pick_title | Pick one thing | Such dir eine Sache aus
+focus_pick_subtitle | The rest can wait. | Der Rest kann warten.
+focus_quick_minutes | %1$d min | %1$d Min
+focus_from_today | From today's plan | Aus dem heutigen Plan
+notice_finished | Done: %1$s | Geschafft: %1$s
+focus_paused | Paused | Pausiert
+focus_plus_five | +5 min | +5 Min
+focus_finish | Finish | Fertig
+action_cancel | Cancel | Abbrechen
+focus_notifications_off | Notifications are off. The timer keeps running but can't alert you while the app is closed. | Benachrichtigungen sind aus. Der Timer läuft, meldet sich bei geschlossener App aber nicht.
+focus_enable_notifications | Turn on notifications | Benachrichtigungen einschalten
+cd_focus_ring | Progress. Turning the ring completes the task. | Fortschritt. Am Ring drehen schließt die Aufgabe ab.
+
+# ui/AssistantScreen.kt
+assistant_intro | Just tell me what's coming up.\nWe'll sort it out together. | Erzähl einfach, was ansteht.\nWir sortieren das zusammen.
+assistant_no_key_title | Your own key,\nno subscription. | Dein eigener Schlüssel,\nkein Abo.
+assistant_no_key_text | Tagwerk is free. For the AI features you add your own Claude API key. You only pay what you use at Anthropic. Everything else works without it. | Tagwerk ist kostenlos. Für die KI-Funktionen hinterlegst du deinen eigenen Claude-API-Key. Du zahlst nur, was du bei Anthropic verbrauchst. Alles andere funktioniert auch ohne.
+assistant_add_key | Add API key | API-Key hinterlegen
+assistant_placeholder | What's coming up? | Was steht an?
+assistant_speak | Speak | Sprechen
+assistant_no_voice | Voice input is not available on this device. | Auf diesem Gerät ist keine Spracheingabe verfügbar.
+assistant_send | Send | Senden
+menu | Menu | Menü
+assistant_clear | Clear conversation | Gespräch leeren
+assistant_accept | Accept | Übernehmen
+assistant_reject | Discard | Verwerfen
+assistant_accepted | Accepted | Übernommen
+assistant_rejected | Discarded | Verworfen
+
+# ui/VisualsSheet.kt
+action_save | Save | Speichern
+cd_search_emoji | Search emoji | Emoji suchen
+search | Search | Suche
+nothing_found | Nothing found | Nichts gefunden
+cd_pick_color | Pick a color | Farbe wählen
+cd_pick_hue | Pick a hue | Farbton wählen
+
+# ui/StepsEditor.kt
+steps_title | Steps | Teilaufgaben
+thinking | Thinking… | Denkt nach…
+steps_suggest | Suggest steps | Schritte vorschlagen
+steps_timer | Timer per step | Timer pro Schritt
+steps_timer_hint | Each step counts down on its own in focus | Jeder Schritt zählt im Fokus für sich herunter
+cd_step_visuals | Emoji and color for this step | Emoji und Farbe für diesen Schritt
+cd_step_title | Step title | Titel des Schritts
+step_placeholder | What's the step called? | Wie heißt der Schritt?
+cd_remove_step | Remove step | Schritt entfernen
+cd_move_step | Move step | Schritt verschieben
+cd_minutes | Minutes | Minuten
+add_step | Add step | Schritt hinzufügen
+
+# ui/TaskSheet.kt
+scope_save_title | Save change for | Änderung speichern für
+discard_changes_title | Discard changes? | Änderungen verwerfen?
+keep_editing | Keep editing | Weiter bearbeiten
+cd_title | Title | Titel
+action_create | Create | Anlegen
+cd_more_options | More options | Mehr Optionen
+action_close | Close | Schließen
+new_todo | New to-do | Neues To-do
+field_task_name | Task name | Aufgabenname
+field_task_name_placeholder | Name of the task | Name der Aufgabe
+cd_emoji_color | Emoji and color | Emoji und Farbe
+error_name_missing | Please enter a name | Bitte gib einen Namen ein
+field_place | Where | Ort
+place_in_plan | In the plan | Im Plan
+place_on_list | On a list | Auf der Liste
+field_daypart | Time of day | Tageszeit
+field_date | Date | Datum
+field_time | Time | Uhrzeit
+field_repeat | Repeat | Wiederholen
+field_last_day | Last day | Letzter Tag
+cd_remove_end | Remove end | Ende entfernen
+no_end | No end | Ohne Ende
+cd_notes | Notes | Notizen
+notes_placeholder | Write your notes... | Schreibe deine Notizen...
+at_time | At a set time | Zu einer Uhrzeit
+no_repeat | Don't repeat | Nicht wiederholen
+every_week | Every week | Jede Woche
+every_n | Every %1$d | Alle %1$d
+scope_this | Only this occurrence | Nur dieser Termin
+scope_following | This and all following | Dieser und alle folgenden
+scope_all | All occurrences | Alle Termine
+field_duration | Duration (min) | Dauer (Min)
+cd_duration_minutes | Duration in minutes | Dauer in Minuten
+duration_chip_minutes | %1$dm | %1$dM
+duration_chip_hours | %1$dh | %1$dStd
+duration_chip_hours_minutes | %1$dh %2$dm | %1$dStd %2$dM
+example_0 | What do you want to do? | Was möchtest du tun?
+example_1 | Hang up the laundry | Wäsche aufhängen
+example_2 | Call the dentist | Zahnarzt anrufen
+example_3 | Take a breather | Kurz durchatmen
+
+# ui/TodoScreen.kt
+ideas_title | Ideas for this list | Ideen für diese Liste
+ideas_subtitle | Matching what's already on it | Passend zu dem, was schon draufsteht
+cd_new_ideas | Get new ideas | Neue Ideen holen
+get_ideas | Get ideas | Ideen holen
+new_list | New list | Neue Liste
+name | Name | Name
+delete_list_title | Delete “%1$s”? | „%1$s“ löschen?
+delete_list_text | The to-dos on this list will be deleted too. | Die To-dos auf dieser Liste werden mit gelöscht.
+keep | Keep | Behalten
+edit_lists | Edit lists | Listen bearbeiten
+cd_delete_named | Delete “%1$s” | „%1$s“ löschen
+empty_list | Put something on the list | Etwas auf die Liste setzen
+empty_low | These can wait | Darf ruhig warten
+empty_high | Nothing's on fire right now | Gerade brennt nichts
+empty_group | There's still room here | Hier ist noch Platz
+todo | To-do | To-do
+cd_accept_idea | Accept: %1$s | Übernehmen: %1$s
+cd_list_menu | List menu | Listen-Menü
+create_list | Create new list | Neue Liste erstellen
+group_by | Group by | Gruppieren nach
+sort_by | Sort by | Sortieren nach
+view | View | Ansicht
+show_done_todos | Done to-dos | Erledigte To-dos
+show_ideas | Suggested tasks | Vorgeschlagene Aufgaben
+cd_selected | Selected | Gewählt
+cd_delete_task | Delete task “%1$s” | Aufgabe „%1$s“ löschen
+
+# ui/SettingsScreen.kt
+back | Back | Zurück
+settings_api_key | Claude API key | Claude-API-Key
+settings_key_stored | A key is stored encrypted on this device. | Ein Schlüssel ist verschlüsselt auf diesem Gerät gespeichert.
+settings_key_missing | No key added yet. Everything except the AI features works without it. | Noch kein Schlüssel hinterlegt. Ohne ihn funktioniert alles außer den KI-Funktionen.
+settings_key_new | Enter a new key | Neuen Schlüssel eingeben
+settings_key_hint | API key | API-Key
+notice_key_saved | Key saved | Schlüssel gespeichert
+settings_testing | Checking… | Prüft…
+settings_test | Test | Testen
+notice_key_deleted | Key deleted | Schlüssel gelöscht
+settings_create_key | Create a key at Anthropic | Schlüssel bei Anthropic erstellen
+settings_model | Model | Modell
+settings_model_hint | Costs are billed to your Anthropic account and depend on the model. | Die Kosten laufen über dein Anthropic-Konto und hängen vom Modell ab.
+settings_notifications | Notifications | Benachrichtigungen
+settings_notifications_blocked | Android is currently blocking notifications from Tagwerk. | Android blockiert die Meldungen von Tagwerk gerade.
+settings_reminder_before | %1$d minutes before the start | %1$d Minuten vor dem Start
+settings_reminder_start | At the start | Zum Start
+settings_notifications_system | Sound and display in Android | Ton und Anzeige in Android
+settings_notifications_enable | Turn on in Android | In Android einschalten
+settings_notifications_hint | Applies to tasks with a fixed time. The focus timer always alerts you. | Gilt für Aufgaben mit fester Uhrzeit. Der Fokus-Timer meldet sich immer.
+settings_no_calendar | No calendar is set up on this device yet. | Auf diesem Gerät ist noch kein Kalender eingerichtet.
+settings_disconnect_calendar | Disconnect calendar | Kalender trennen
+settings_connect_calendar | Connect calendar | Kalender verbinden
+settings_allow_in_android | Allow in Android | In Android erlauben
+settings_calendar_hint | Shows events from this device's calendars in the plan, for example from your Google account. Events are only read, never stored and never sent to the AI. | Zeigt Termine aus den Kalendern dieses Geräts im Plan, zum Beispiel aus deinem Google-Konto. Termine werden nur gelesen, nicht gespeichert und nicht an die KI geschickt.
+settings_app | App settings | App-Einstellungen
+settings_sounds | Sounds | Töne
+settings_fireworks | Fireworks | Feuerwerk
+settings_haptics | Haptic feedback | Haptisches Feedback
+settings_your_data | Your data | Deine Daten
+settings_data_text | Tasks stay on this device. There is no account, no ads and no tracking. Only when you use an AI feature do your message and the task titles it needs go directly from this device to Anthropic. | Aufgaben bleiben auf diesem Gerät. Es gibt kein Konto, keine Werbung und kein Tracking. Nur wenn du eine KI-Funktion nutzt, gehen deine Nachricht und die dafür nötigen Aufgabentitel direkt von diesem Gerät an Anthropic.
+settings_dev | Development only | Nur für Entwicklung
+settings_base_url | API base URL (empty = Anthropic) | API-Basis-URL (leer = Anthropic)
+settings_apply_url | Apply URL | URL übernehmen

@@ -1,21 +1,26 @@
 package me.ttdrp.tagwerk.model
 
+import androidx.annotation.StringRes
 import kotlinx.serialization.Serializable
+import me.ttdrp.tagwerk.R
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalAdjusters
 
 @Serializable
-enum class RepeatRule(val label: String) {
-    DAILY("Täglich"),
-    WEEKDAYS("Werktags"),
-    WEEKENDS("Am Wochenende"),
-    WEEKLY("Wöchentlich"),
-    BIWEEKLY("Alle zwei Wochen"),
-    MONTHLY("Monatlich"),
-    YEARLY("Jährlich"),
-    CUSTOM("Eigener Rhythmus"),
+enum class RepeatRule(@StringRes private val labelRes: Int) {
+    DAILY(R.string.repeat_daily),
+    WEEKDAYS(R.string.repeat_weekdays),
+    WEEKENDS(R.string.repeat_weekends),
+    WEEKLY(R.string.repeat_weekly),
+    BIWEEKLY(R.string.repeat_biweekly),
+    MONTHLY(R.string.repeat_monthly),
+    YEARLY(R.string.repeat_yearly),
+    CUSTOM(R.string.repeat_custom),
+    ;
+
+    val label: String get() = str(labelRes)
 }
 
 /** [weekdays] und [everyWeeks] gelten nur für [RepeatRule.CUSTOM]; Wochentage von 1 (Montag) bis 7. */
@@ -27,13 +32,19 @@ data class Repeat(
     val untilEpochDay: Long? = null,
 )
 
-private val SHORT_DAYS = listOf("Mo", "Di", "Mi", "Do", "Fr", "Sa", "So")
+/** Short weekday names from Monday (1) to Sunday (7). */
+fun shortDayName(isoDay: Int): String = str(SHORT_DAYS[isoDay - 1])
+
+private val SHORT_DAYS = listOf(
+    R.string.day_short_mon, R.string.day_short_tue, R.string.day_short_wed, R.string.day_short_thu,
+    R.string.day_short_fri, R.string.day_short_sat, R.string.day_short_sun,
+)
 
 val Repeat.label: String
     get() {
         if (rule != RepeatRule.CUSTOM) return rule.label
-        val days = weekdays.sorted().joinToString(", ") { SHORT_DAYS[it - 1] }
-        return if (everyWeeks > 1) "$days · alle $everyWeeks Wochen" else days
+        val days = weekdays.sorted().joinToString(", ") { shortDayName(it) }
+        return if (everyWeeks > 1) str(R.string.repeat_every_weeks, days, everyWeeks) else days
     }
 
 /**

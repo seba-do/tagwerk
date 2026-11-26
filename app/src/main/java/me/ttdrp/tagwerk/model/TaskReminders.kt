@@ -1,5 +1,6 @@
 package me.ttdrp.tagwerk.model
 
+import me.ttdrp.tagwerk.R
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -54,12 +55,16 @@ object TaskReminders {
         return when (reminder.kind) {
             ReminderKind.BEFORE -> {
                 val minutes = ((start - nowMs + MINUTE_MS - 1) / MINUTE_MS).coerceAtLeast(1)
-                val span = if (minutes == 1L) "1 Minute" else "$minutes Minuten"
-                AlarmText(title, "Startet in $span, um ${clock(start, zone)}.")
+                val text = if (minutes == 1L) {
+                    str(R.string.reminder_before_one, clock(start, zone))
+                } else {
+                    str(R.string.reminder_before, minutes, clock(start, zone))
+                }
+                AlarmText(title, text)
             }
             ReminderKind.START -> {
                 val end = start + task.effectiveMinutes * MINUTE_MS
-                AlarmText(title, "Geht jetzt los. Geplant bis ${clock(end, zone)}.")
+                AlarmText(title, str(R.string.reminder_start, clock(end, zone)))
             }
         }
     }
@@ -87,5 +92,5 @@ object TaskReminders {
 
 internal fun clockText(ms: Long, zone: ZoneId): String {
     val time = Instant.ofEpochMilli(ms).atZone(zone).toLocalTime()
-    return String.format(Locale.GERMANY, "%02d:%02d", time.hour, time.minute)
+    return String.format(Locale.ROOT, "%02d:%02d", time.hour, time.minute)
 }

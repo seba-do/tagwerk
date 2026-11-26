@@ -19,6 +19,10 @@ import java.time.ZoneId
 import java.time.ZoneOffset
 
 class TaskRemindersTest {
+    init {
+        TestStrings.install()
+    }
+
     private val utc: ZoneId = ZoneOffset.UTC
     private val day = LocalDate.of(2026, 11, 6)
     private val both = ReminderSettings()
@@ -156,11 +160,11 @@ class TaskRemindersTest {
     fun `die Vorwarnung nennt die verbleibende Zeit und die Uhrzeit`() {
         val reminder = TaskReminder("a", ReminderKind.BEFORE, at(590))
         assertEquals(
-            AlarmText("🧾 Steuer", "Startet in 10 Minuten, um 10:00."),
+            AlarmText("🧾 Steuer", "Starts in 10 minutes, at 10:00."),
             TaskReminders.message(reminder, task(), utc, at(590)),
         )
         assertEquals(
-            "Startet in 1 Minute, um 10:00.",
+            "Starts in 1 minute, at 10:00.",
             TaskReminders.message(reminder, task(), utc, at(599)).text,
         )
     }
@@ -169,7 +173,7 @@ class TaskRemindersTest {
     fun `die Startmeldung nennt das geplante Ende`() {
         val reminder = TaskReminder("a", ReminderKind.START, at(600))
         assertEquals(
-            AlarmText("🧾 Steuer", "Geht jetzt los. Geplant bis 10:30."),
+            AlarmText("🧾 Steuer", "Starting now. Planned until 10:30."),
             TaskReminders.message(reminder, task(), utc, at(600)),
         )
     }

@@ -56,6 +56,6 @@ class Conversation {
     }
 
     private companion object {
-        const val UNDECIDED = "Der Nutzer hat noch nicht entschieden."
+        const val UNDECIDED = "The user has not decided yet."
     }
 }

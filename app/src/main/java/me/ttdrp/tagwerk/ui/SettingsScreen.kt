@@ -1,5 +1,7 @@
 package me.ttdrp.tagwerk.ui
 
+import me.ttdrp.tagwerk.R
+import me.ttdrp.tagwerk.model.str
 import android.Manifest
 import android.app.NotificationManager
 import android.content.Intent
@@ -89,8 +91,8 @@ fun SettingsScreen(vm: AppViewModel, modifier: Modifier, onClose: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(20.dp),
         ) {
-            RoundIconButton(Icons.AutoMirrored.Filled.ArrowBack, "Zurück", onClose)
-            Text("Einstellungen", style = MaterialTheme.typography.headlineLarge, color = MaterialTheme.colorScheme.onSurface)
+            RoundIconButton(Icons.AutoMirrored.Filled.ArrowBack, str(R.string.back), onClose)
+            Text(str(R.string.settings), style = MaterialTheme.typography.headlineLarge, color = MaterialTheme.colorScheme.onSurface)
         }
 
         Column(
@@ -100,11 +102,10 @@ fun SettingsScreen(vm: AppViewModel, modifier: Modifier, onClose: () -> Unit) {
                 .navigationBarsPadding()
                 .padding(start = 25.dp, end = 25.dp, bottom = 24.dp),
         ) {
-            Label("Claude-API-Key")
+            Label(str(R.string.settings_api_key))
             GroupCard {
                 Text(
-                    if (hasKey) "Ein Schlüssel ist verschlüsselt auf diesem Gerät gespeichert."
-                    else "Noch kein Schlüssel hinterlegt. Ohne ihn funktioniert alles außer den KI-Funktionen.",
+                    str(if (hasKey) R.string.settings_key_stored else R.string.settings_key_missing),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(start = 17.dp, end = 17.dp, top = 16.dp, bottom = 6.dp),
@@ -114,7 +115,7 @@ fun SettingsScreen(vm: AppViewModel, modifier: Modifier, onClose: () -> Unit) {
                     onValueChange = { keyInput = it },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
-                    placeholder = { Text(if (hasKey) "Neuen Schlüssel eingeben" else "API-Key") },
+                    placeholder = { Text(str(if (hasKey) R.string.settings_key_new else R.string.settings_key_hint)) },
                     visualTransformation = PasswordVisualTransformation(),
                     colors = plainFieldColors(),
                 )
@@ -125,73 +126,73 @@ fun SettingsScreen(vm: AppViewModel, modifier: Modifier, onClose: () -> Unit) {
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     InversePill(
-                        "Speichern",
+                        str(R.string.action_save),
                         null,
                         enabled = keyInput.isNotBlank(),
                         onClick = {
                             vm.saveApiKey(keyInput)
                             keyInput = ""
-                            vm.notify("Schlüssel gespeichert")
+                            vm.notify(str(R.string.notice_key_saved))
                         },
                     )
                     if (hasKey) {
                         PillLabel(
-                            if (busy) "Prüft…" else "Testen",
+                            str(if (busy) R.string.settings_testing else R.string.settings_test),
                             container = MaterialTheme.colorScheme.surfaceVariant,
                             onClick = { if (!busy) vm.testKey() },
                         )
                         PillLabel(
-                            "Löschen",
+                            str(R.string.action_delete),
                             container = MaterialTheme.colorScheme.surfaceVariant,
                             onClick = {
                                 vm.deleteApiKey()
-                                vm.notify("Schlüssel gelöscht")
+                                vm.notify(str(R.string.notice_key_deleted))
                             },
                         )
                     }
                 }
                 GroupDivider()
-                SettingRow("Schlüssel bei Anthropic erstellen", { uriHandler.openUri("https://console.anthropic.com/settings/keys") }) {
+                SettingRow(str(R.string.settings_create_key), { uriHandler.openUri("https://console.anthropic.com/settings/keys") }) {
                     Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null, tint = MaterialTheme.colorScheme.onSurface)
                 }
             }
 
-            Label("Modell")
+            Label(str(R.string.settings_model))
             GroupCard {
                 MODEL_OPTIONS.forEachIndexed { index, option ->
                     if (index > 0) GroupDivider()
                     SettingRow(option.label, { vm.setModel(option.id) }) {
                         if (model == option.id) {
-                            Icon(Icons.Filled.Check, contentDescription = "Gewählt", tint = MaterialTheme.colorScheme.primary)
+                            Icon(Icons.Filled.Check, contentDescription = str(R.string.cd_selected), tint = MaterialTheme.colorScheme.primary)
                         }
                     }
                 }
             }
             Text(
-                "Die Kosten laufen über dein Anthropic-Konto und hängen vom Modell ab.",
+                str(R.string.settings_model_hint),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(start = 12.dp, top = 8.dp),
             )
 
-            Label("Benachrichtigungen")
+            Label(str(R.string.settings_notifications))
             if (!notificationsOn) {
                 Text(
-                    "Android blockiert die Meldungen von Tagwerk gerade.",
+                    str(R.string.settings_notifications_blocked),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.padding(start = 12.dp, bottom = 8.dp),
                 )
             }
             GroupCard {
-                SwitchRow("${TaskReminders.BEFORE_MINUTES} Minuten vor dem Start", reminders.before) {
+                SwitchRow(str(R.string.settings_reminder_before, TaskReminders.BEFORE_MINUTES), reminders.before) {
                     vm.setReminderSettings(reminders.copy(before = it))
                 }
                 GroupDivider()
-                SwitchRow("Zum Start", reminders.atStart) { vm.setReminderSettings(reminders.copy(atStart = it)) }
+                SwitchRow(str(R.string.settings_reminder_start), reminders.atStart) { vm.setReminderSettings(reminders.copy(atStart = it)) }
                 GroupDivider()
                 SettingRow(
-                    if (notificationsOn) "Ton und Anzeige in Android" else "In Android einschalten",
+                    str(if (notificationsOn) R.string.settings_notifications_system else R.string.settings_notifications_enable),
                     {
                         context.startActivity(
                             Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
@@ -203,18 +204,18 @@ fun SettingsScreen(vm: AppViewModel, modifier: Modifier, onClose: () -> Unit) {
                 }
             }
             Text(
-                "Gilt für Aufgaben mit fester Uhrzeit. Der Fokus-Timer meldet sich immer.",
+                str(R.string.settings_notifications_hint),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(start = 12.dp, top = 8.dp),
             )
 
-            Label("Kalender")
+            Label(str(R.string.calendar_fallback_name))
             GroupCard {
                 if (calendar.connected && calendar.permitted) {
                     if (calendar.calendars.isEmpty()) {
                         Text(
-                            "Auf diesem Gerät ist noch kein Kalender eingerichtet.",
+                            str(R.string.settings_no_calendar),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(17.dp),
@@ -229,10 +230,10 @@ fun SettingsScreen(vm: AppViewModel, modifier: Modifier, onClose: () -> Unit) {
                         ) { vm.setCalendarVisible(item.id, it) }
                         GroupDivider()
                     }
-                    SettingRow("Kalender trennen", { vm.disconnectCalendar() }) {}
+                    SettingRow(str(R.string.settings_disconnect_calendar), { vm.disconnectCalendar() }) {}
                 } else {
                     SettingRow(
-                        "Kalender verbinden",
+                        str(R.string.settings_connect_calendar),
                         {
                             if (calendar.permitted) vm.connectCalendar() else askCalendar.launch(Manifest.permission.READ_CALENDAR)
                         },
@@ -242,7 +243,7 @@ fun SettingsScreen(vm: AppViewModel, modifier: Modifier, onClose: () -> Unit) {
                     if (calendarDenied) {
                         GroupDivider()
                         SettingRow(
-                            "In Android erlauben",
+                            str(R.string.settings_allow_in_android),
                             {
                                 context.startActivity(
                                     Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", context.packageName, null)),
@@ -255,28 +256,25 @@ fun SettingsScreen(vm: AppViewModel, modifier: Modifier, onClose: () -> Unit) {
                 }
             }
             Text(
-                "Zeigt Termine aus den Kalendern dieses Geräts im Plan, zum Beispiel aus deinem Google-Konto. " +
-                    "Termine werden nur gelesen, nicht gespeichert und nicht an die KI geschickt.",
+                str(R.string.settings_calendar_hint),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(start = 12.dp, top = 8.dp),
             )
 
-            Label("App-Einstellungen")
+            Label(str(R.string.settings_app))
             GroupCard {
-                SwitchRow("Töne", feedback.sound) { vm.setFeedback(feedback.copy(sound = it)) }
+                SwitchRow(str(R.string.settings_sounds), feedback.sound) { vm.setFeedback(feedback.copy(sound = it)) }
                 GroupDivider()
-                SwitchRow("Feuerwerk", feedback.motion) { vm.setFeedback(feedback.copy(motion = it)) }
+                SwitchRow(str(R.string.settings_fireworks), feedback.motion) { vm.setFeedback(feedback.copy(motion = it)) }
                 GroupDivider()
-                SwitchRow("Haptisches Feedback", feedback.haptics) { vm.setFeedback(feedback.copy(haptics = it)) }
+                SwitchRow(str(R.string.settings_haptics), feedback.haptics) { vm.setFeedback(feedback.copy(haptics = it)) }
             }
 
-            Label("Deine Daten")
+            Label(str(R.string.settings_your_data))
             GroupCard {
                 Text(
-                    "Aufgaben bleiben auf diesem Gerät. Es gibt kein Konto, keine Werbung und kein Tracking. " +
-                        "Nur wenn du eine KI-Funktion nutzt, gehen deine Nachricht und die dafür nötigen Aufgabentitel " +
-                        "direkt von diesem Gerät an Anthropic.",
+                    str(R.string.settings_data_text),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.padding(17.dp),
@@ -284,18 +282,18 @@ fun SettingsScreen(vm: AppViewModel, modifier: Modifier, onClose: () -> Unit) {
             }
 
             if (BuildConfig.DEBUG) {
-                Label("Nur für Entwicklung")
+                Label(str(R.string.settings_dev))
                 GroupCard {
                     TextField(
                         value = urlInput,
                         onValueChange = { urlInput = it },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
-                        placeholder = { Text("API-Basis-URL (leer = Anthropic)") },
+                        placeholder = { Text(str(R.string.settings_base_url)) },
                         colors = plainFieldColors(),
                     )
                     GroupDivider()
-                    SettingRow("URL übernehmen", { vm.setBaseUrl(urlInput) }) {}
+                    SettingRow(str(R.string.settings_apply_url), { vm.setBaseUrl(urlInput) }) {}
                 }
             }
         }

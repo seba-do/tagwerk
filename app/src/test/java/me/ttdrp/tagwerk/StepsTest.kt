@@ -12,6 +12,10 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class StepsTest {
+    init {
+        TestStrings.install()
+    }
+
     private fun step(title: String, minutes: Int? = null, id: String = title) = Subtask(id = id, title = title, minutes = minutes)
 
     @Test

@@ -24,6 +24,10 @@ import java.time.LocalDate
 import java.time.ZoneOffset
 
 class RecurrenceTest {
+    init {
+        TestStrings.install()
+    }
+
     // Der 2. November 2026 ist ein Montag.
     private val monday = LocalDate.of(2026, 11, 2)
     private fun day(offset: Long) = monday.plusDays(offset)
@@ -258,9 +262,9 @@ class RecurrenceTest {
 
     @Test
     fun `Beschriftungen`() {
-        assertEquals("Täglich", Repeat(RepeatRule.DAILY).label)
-        assertEquals("Mo, Mi", Repeat(RepeatRule.CUSTOM, weekdays = listOf(3, 1)).label)
-        assertEquals("Fr · alle 2 Wochen", Repeat(RepeatRule.CUSTOM, weekdays = listOf(5), everyWeeks = 2).label)
+        assertEquals("Daily", Repeat(RepeatRule.DAILY).label)
+        assertEquals("Mon, Wed", Repeat(RepeatRule.CUSTOM, weekdays = listOf(3, 1)).label)
+        assertEquals("Fri · every 2 weeks", Repeat(RepeatRule.CUSTOM, weekdays = listOf(5), everyWeeks = 2).label)
     }
 
     @Test
@@ -289,7 +293,7 @@ class RecurrenceTest {
     @Test
     fun `der Assistent kennt laufende Serien`() {
         val text = PromptText.chatContext(listOf(series(RepeatRule.DAILY)), day(30))
-        assertTrue(text, "Serie" in text && "Täglich" in text)
+        assertTrue(text, "Serie" in text && "Daily" in text)
         assertNotNull(text)
     }
 

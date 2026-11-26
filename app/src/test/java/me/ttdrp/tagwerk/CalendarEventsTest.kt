@@ -18,6 +18,10 @@ import java.time.ZoneId
 import java.time.ZoneOffset
 
 class CalendarEventsTest {
+    init {
+        TestStrings.install()
+    }
+
     private val berlin: ZoneId = ZoneId.of("Europe/Berlin")
     private val day = LocalDate.of(2026, 11, 6)
 
@@ -88,12 +92,12 @@ class CalendarEventsTest {
         fun label(e: CalendarEvent, on: LocalDate = day) = CalendarEvents.timeLabel(e, on, berlin)
         assertEquals("09:30 – 10:00", label(event(local(day, 9, 30), local(day, 10))))
         assertEquals("09:30", label(event(local(day, 9, 30), local(day, 9, 30))))
-        assertEquals("Ganztägig", label(event(utc(day), utc(day.plusDays(1)), allDay = true)))
+        assertEquals("All day", label(event(utc(day), utc(day.plusDays(1)), allDay = true)))
         val overnight = event(local(day, 22), local(day.plusDays(1), 10))
-        assertEquals("Ab 22:00", label(overnight))
-        assertEquals("Bis 10:00", label(overnight, day.plusDays(1)))
+        assertEquals("From 22:00", label(overnight))
+        assertEquals("Until 10:00", label(overnight, day.plusDays(1)))
         val long = event(local(day.minusDays(1), 22), local(day.plusDays(1), 10))
-        assertEquals("Ganztägig", label(long))
+        assertEquals("All day", label(long))
     }
 
     @Test

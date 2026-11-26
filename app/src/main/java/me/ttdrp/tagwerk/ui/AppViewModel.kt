@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.ttdrp.tagwerk.BuildConfig
+import me.ttdrp.tagwerk.R
 import me.ttdrp.tagwerk.alarm.FocusAlarmScheduler
 import me.ttdrp.tagwerk.alarm.TaskReminderScheduler
 import me.ttdrp.tagwerk.ai.Assistant
@@ -44,6 +45,7 @@ import me.ttdrp.tagwerk.model.Subtask
 import me.ttdrp.tagwerk.model.Task
 import me.ttdrp.tagwerk.model.TodoList
 import me.ttdrp.tagwerk.model.newId
+import me.ttdrp.tagwerk.model.str
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -222,24 +224,24 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     fun duplicateTask(task: Task) {
         store.update { s -> s.copy(tasks = Recurrence.duplicate(s.tasks, task)) }
-        notify("„${task.title}“ kopiert")
+        notify(str(R.string.notice_copied, task.title))
     }
 
     /** Bei einem Termin einer Serie wandert nur dieser eine Tag, ein To-do landet damit im Plan. */
     fun rescheduleTask(task: Task, day: LocalDate) {
         if (task.kind == Kind.PLAN && task.epochDay == day.toEpochDay()) return
         saveTask(task.copy(kind = Kind.PLAN, epochDay = day.toEpochDay()))
-        notify("„${task.title}“ geplant für ${day.format(DateTimeFormatter.ofPattern("EEEE, d. MMMM", Locale.GERMAN))}")
+        notify(str(R.string.notice_rescheduled, task.title, day.format(DateTimeFormatter.ofPattern(str(R.string.notice_rescheduled_pattern), Locale.getDefault()))))
     }
 
     fun scheduleToday(task: Task) {
         saveTask(task.copy(kind = Kind.PLAN, epochDay = LocalDate.now().toEpochDay()))
-        notify("„${task.title}“ steht jetzt im heutigen Plan")
+        notify(str(R.string.notice_scheduled_today, task.title))
     }
 
     fun moveToList(task: Task, list: TodoList) {
         saveTask(task.copy(kind = Kind.TODO, epochDay = null, startMinute = null, listId = list.id))
-        notify("„${task.title}“ liegt jetzt auf „${list.name}“")
+        notify(str(R.string.notice_moved_to_list, task.title, list.name))
     }
 
     fun addList(name: String) = store.update { s ->
@@ -266,7 +268,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     fun startQuickFocus(minutes: Int) {
         val task = Task(
-            title = "Fokuszeit",
+            title = str(R.string.quick_focus_title),
             emoji = "🎯",
             tint = 2,
             epochDay = LocalDate.now().toEpochDay(),
@@ -367,14 +369,14 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
         return Assistant(key, _model.value, url, conversation).also { assistant = it }
     }
 
-    fun testKey() = aiCall("Der Schlüssel funktioniert.") { it.testConnection() }
+    fun testKey() = aiCall(str(R.string.notice_key_works)) { it.testConnection() }
 
     // ---- KI ----
 
     private fun aiCall(successNotice: String? = null, block: suspend (Assistant) -> Unit) {
         val ai = assistantOrNull()
         if (ai == null) {
-            notify("Hinterlege zuerst deinen API-Key in den Einstellungen.")
+            notify(str(R.string.notice_key_missing))
             return
         }
         viewModelScope.launch {
@@ -383,7 +385,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                 block(ai)
                 successNotice?.let(::notify)
             } catch (e: AssistantException) {
-                notify(e.message ?: "Die Anfrage ist fehlgeschlagen.")
+                notify(e.message ?: str(R.string.notice_request_failed))
             } finally {
                 _busy.value = false
             }
@@ -424,10 +426,10 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
                     ),
                 )
             }
-            notify("${entry.proposals.size} Aufgabe(n) übernommen")
+            notify(if (entry.proposals.size == 1) str(R.string.notice_accepted_one) else str(R.string.notice_accepted, entry.proposals.size))
         }
         val titles = entry.proposals.joinToString(", ") { it.title }
-        val answer = "Der Nutzer hat diese Vorschläge ${if (accept) "übernommen" else "verworfen"}: $titles"
+        val answer = "The user ${if (accept) "accepted" else "rejected"} these proposals: $titles"
         entry.toolUseIds.forEach { conversation.recordDecision(it, answer) }
         _chat.value = _chat.value.map { if (it.id == entry.id) it.copy(decision = accept) else it }
     }
@@ -445,7 +447,7 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
 
     /** Schlägt passende Einträge für eine Liste vor. */
     fun suggestForList(listName: String, existing: List<String>, onResult: (List<SuggestedItem>) -> Unit) = aiCall { ai ->
-        val known = existing.joinToString(", ").ifEmpty { "noch keine" }
-        onResult(ai.suggestItems("Schlage weitere Aufgaben für die Liste „$listName“ vor. Vorhanden sind: $known."))
+        val known = existing.joinToString(", ").ifEmpty { "none yet" }
+        onResult(ai.suggestItems("Suggest more tasks for the list \"$listName\". Already on it: $known."))
     }
 }

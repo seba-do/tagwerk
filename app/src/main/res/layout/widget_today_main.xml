@@ -114,7 +114,7 @@
         android:gravity="center"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:text="Start ▶&#xFE0E;"
+        android:text="@string/widget_start"
         android:textColor="#FF000000"
         android:textSize="14sp"
         android:textStyle="bold" />
@@ -133,7 +133,7 @@
             android:layout_width="34dp"
             android:layout_height="34dp"
             android:background="@drawable/widget_control_background"
-            android:contentDescription="Fünf Minuten mehr"
+            android:contentDescription="@string/widget_extend"
             android:gravity="center"
             android:text="+5"
             android:textColor="#FFFFFFFF"
@@ -155,7 +155,7 @@
             android:layout_width="34dp"
             android:layout_height="34dp"
             android:background="@drawable/widget_control_background"
-            android:contentDescription="Erledigt"
+            android:contentDescription="@string/action_done"
             android:scaleType="center"
             android:src="@drawable/widget_finish" />
     </LinearLayout>

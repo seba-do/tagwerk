@@ -8,6 +8,10 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class ListSortTest {
+    init {
+        TestStrings.install()
+    }
+
     private fun task(title: String, minutes: Int = 30) = Task(title = title, minutes = minutes)
     private val tasks = listOf(task("Zebra", 10), task("äpfel", 60), task("Birne", 5))
 

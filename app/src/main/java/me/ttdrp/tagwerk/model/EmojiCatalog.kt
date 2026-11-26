@@ -1,14 +1,19 @@
 package me.ttdrp.tagwerk.model
 
+import androidx.annotation.StringRes
+import me.ttdrp.tagwerk.R
+
 /** Eigene Auswahl gängiger Emojis. Angezeigt werden sie mit der Emoji-Schrift des Geräts. */
 object EmojiCatalog {
-    data class Category(val name: String, val emojis: List<String>)
+    data class Category(@StringRes private val nameRes: Int, val emojis: List<String>) {
+        val name: String get() = str(nameRes)
+    }
 
     private fun set(text: String) = text.trim().split(Regex("\\s+"))
 
     val categories: List<Category> = listOf(
         Category(
-            "Smileys und Gefühle",
+            R.string.emoji_cat_smileys,
             set(
                 """😀 😃 😄 😁 😆 😅 🤣 😂 🙂 🙃 😉 😊 😇 🥰 😍 🤩 😘 😗 😋 😛 😜 🤪 😝 🤗 🤭 🤫 🤔 🤐 😐 😑 😶 😏 😒 🙄
                 😬 😌 😔 😪 🤤 😴 😷 🤒 🤕 🤢 🤮 🥵 🥶 🥴 😵 🤯 🤠 🥳 😎 🤓 😕 😟 🙁 😮 😯 😲 😳 🥺 😦 😧 😨 😰 😥 😢 😭
@@ -16,14 +21,14 @@ object EmojiCatalog {
             ),
         ),
         Category(
-            "Menschen",
+            R.string.emoji_cat_people,
             set(
                 """👋 🤚 ✋ 🖖 👌 🤏 ✌️ 🤞 🤟 🤘 🤙 👈 👉 👆 👇 👍 👎 ✊ 👊 👏 🙌 👐 🤲 🤝 🙏 💪 🧠 👀 👂 👃 👄 🦷 🦶 🦵
                 👶 🧒 👦 👧 🧑 👨 👩 🧓 👴 👵 💁 🙋 🙇 🤦 🤷 💆 💇 🚶 🧍 🧎 🏃 💃 🕺 🧖 🧘 👪 👫 👬 👭 🧑‍💻 🧑‍🍳 🧑‍🎓 🧑‍🏫""",
             ),
         ),
         Category(
-            "Tiere und Natur",
+            R.string.emoji_cat_nature,
             set(
                 """🐶 🐕 🐩 🐱 🐈 🐭 🐹 🐰 🦊 🐻 🐼 🐨 🐯 🦁 🐮 🐷 🐸 🐵 🐔 🐧 🐦 🐤 🦆 🦉 🦇 🐺 🐴 🦄 🐝 🐛 🦋 🐌 🐞 🐜 🐢 🐍 🐙
                 🐠 🐟 🐬 🐳 🦈 🐘 🦒 🐄 🐖 🐑 🐐 🌵 🌲 🌳 🌴 🌱 🌿 ☘️ 🍀 🍃 🍂 🍁 🌾 🌷 🌹 🌺 🌸 🌼 🌻 🌞 🌝 🌛 🌙 ⭐ 🌟 ⚡ 🔥
@@ -31,7 +36,7 @@ object EmojiCatalog {
             ),
         ),
         Category(
-            "Essen und Trinken",
+            R.string.emoji_cat_food,
             set(
                 """🍏 🍎 🍐 🍊 🍋 🍌 🍉 🍇 🍓 🫐 🍈 🍒 🍑 🥭 🍍 🥥 🥝 🍅 🍆 🥑 🥦 🥬 🥒 🌶️ 🌽 🥕 🧄 🧅 🥔 🍠 🥐 🥯 🍞 🥖 🧀 🥚 🍳 🥞
                 🧇 🥓 🥩 🍗 🍖 🌭 🍔 🍟 🍕 🥪 🌮 🌯 🥗 🍝 🍜 🍲 🍛 🍣 🍱 🥟 🍚 🍙 🍦 🍩 🍪 🎂 🍰 🧁 🍫 🍬 🍭 🍯 🥛 ☕ 🍵 🧃 🥤 🍺
@@ -39,21 +44,21 @@ object EmojiCatalog {
             ),
         ),
         Category(
-            "Reisen und Orte",
+            R.string.emoji_cat_travel,
             set(
                 """🚗 🚕 🚙 🚌 🏎️ 🚓 🚑 🚒 🚚 🚜 🚲 🛴 🛵 🏍️ 🚨 🚆 🚇 🚊 🚉 ✈️ 🛫 🛬 🚀 🛸 🚁 ⛵ 🚤 🚢 ⚓ ⛽ 🚧 🚦 🗺️ 🧭 🏔️ ⛰️ 🏕️ 🏖️ 🏝️
                 🏠 🏡 🏢 🏥 🏦 🏨 🏪 🏫 ⛪ 🕌 🏰 🗼 🗽 ⛲ 🌅 🌄 🌃 🌆 🌇 🌉""",
             ),
         ),
         Category(
-            "Aktivitäten",
+            R.string.emoji_cat_activities,
             set(
                 """⚽ 🏀 🏈 ⚾ 🎾 🏐 🏉 🎱 🏓 🏸 🥅 ⛳ 🏹 🎣 🥊 🥋 ⛸️ 🎿 🏂 🏋️ 🤸 🚴 🏊 🧗 🏆 🥇 🥈 🥉 🏅 🎖️ 🎫 🎪 🎭 🎨 🎬 🎤 🎧 🎼 🎵 🎶 🎹
                 🥁 🎷 🎺 🎸 🎻 🎲 🎯 🎮 🕹️ 🧩 🎉 🎊 🎈 🎁 🎀""",
             ),
         ),
         Category(
-            "Gegenstände",
+            R.string.emoji_cat_objects,
             set(
                 """🛒 ⌚ 📱 💻 ⌨️ 🖥️ 🖨️ 🖱️ 💾 💿 📷 📹 🎥 📞 ☎️ 📺 📻 ⏰ ⏱️ ⏳ 🔋 🔌 💡 🔦 🕯️ 🧯 💸 💵 💳 💰 💎 🧾 🔧 🔨 🛠️ ⛏️ 🔩 ⚙️ 🧰
                 🧲 🔬 🔭 🩺 💉 💊 🩹 🧬 🧹 🧺 🧻 🧼 🧽 🧴 🪒 🚿 🛁 🚽 🛏️ 🛋️ 🪑 🚪 🖌️ 🖍️ ✏️ ✒️ 🖊️ 📝 📄 📃 📑 📊 📈 📉 🗒️ 📅 📆 📇
@@ -61,14 +66,14 @@ object EmojiCatalog {
             ),
         ),
         Category(
-            "Symbole",
+            R.string.emoji_cat_symbols,
             set(
                 """✅ ☑️ ✔️ ❌ ❎ ➕ ➖ ➗ ✖️ ❓ ❔ ❕ ❗ ‼️ ⁉️ 💯 🔅 🔆 ⚠️ 🚫 ⛔ 📵 🔞 ♻️ ⚜️ 🔱 ⭕ 🔴 🟠 🟡 🟢 🔵 🟣 🟤 ⚫ ⚪ 🟥 🟧 🟨 🟩 🟦 🟪
                 🔶 🔷 🔸 🔹 🔺 🔻 💠 🔘 🔳 🔲 ▶️ ⏸️ ⏹️ ⏺️ ⏭️ ⏮️ ⏩ ⏪ 🔀 🔁 🔂 ➡️ ⬅️ ⬆️ ⬇️ 🔄 🔃 🔔 🔕 📣 📢 💤 💬 💭 🆕 🆗 🆒 🆓 🆙""",
             ),
         ),
         Category(
-            "Flaggen",
+            R.string.emoji_cat_flags,
             set(
                 """🏁 🚩 🎌 🏴 🏳️ 🏳️‍🌈 🇩🇪 🇦🇹 🇨🇭 🇪🇺 🇬🇧 🇺🇸 🇫🇷 🇪🇸 🇮🇹 🇳🇱 🇧🇪 🇵🇱 🇨🇿 🇩🇰 🇸🇪 🇳🇴 🇫🇮 🇵🇹 🇬🇷 🇹🇷 🇺🇦 🇯🇵 🇨🇳 🇰🇷 🇮🇳 🇧🇷 🇨🇦 🇦🇺""",
             ),

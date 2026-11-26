@@ -1,23 +1,30 @@
 package me.ttdrp.tagwerk.model
 
+import androidx.annotation.StringRes
+import me.ttdrp.tagwerk.R
 import java.text.Collator
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Locale
 
-enum class Grouping(val label: String) {
-    NONE("Keine Gruppierung"),
-    PRIORITY("Priorität"),
-    SIZE("Aufgabengröße"),
-    QUADRANT("Eisenhower"),
+enum class Grouping(@StringRes private val labelRes: Int) {
+    NONE(R.string.grouping_none),
+    PRIORITY(R.string.grouping_priority),
+    SIZE(R.string.grouping_size),
+    QUADRANT(R.string.grouping_quadrant),
+    ;
+
+    val label: String get() = str(labelRes)
 }
 
-enum class SizeBucket(val label: String) {
-    TINY("Unter 15 Minuten"),
-    SHORT("15 bis 30 Minuten"),
-    MEDIUM("30 bis 60 Minuten"),
-    LONG("Über eine Stunde"),
+enum class SizeBucket(@StringRes private val labelRes: Int) {
+    TINY(R.string.size_tiny),
+    SHORT(R.string.size_short),
+    MEDIUM(R.string.size_medium),
+    LONG(R.string.size_long),
     ;
+
+    val label: String get() = str(labelRes)
 
     companion object {
         fun of(minutes: Int) = when {
@@ -29,16 +36,19 @@ enum class SizeBucket(val label: String) {
     }
 }
 
-enum class ListSort(val label: String) {
-    MANUAL("Manuelle Reihenfolge"),
-    ALPHABETICAL("Alphabetisch"),
-    DURATION("Dauer"),
+enum class ListSort(@StringRes private val labelRes: Int) {
+    MANUAL(R.string.sort_manual),
+    ALPHABETICAL(R.string.sort_alphabetical),
+    DURATION(R.string.sort_duration),
+    ;
+
+    val label: String get() = str(labelRes)
 }
 
 /** Nur die Sicht: Die gespeicherte Reihenfolge bleibt, damit "Manuell" sie jederzeit zurückbringt. */
 fun sortTasks(tasks: List<Task>, sort: ListSort): List<Task> = when (sort) {
     ListSort.MANUAL -> tasks
-    ListSort.ALPHABETICAL -> tasks.sortedWith(compareBy(Collator.getInstance(Locale.GERMAN)) { it.title })
+    ListSort.ALPHABETICAL -> tasks.sortedWith(compareBy(Collator.getInstance(Locale.getDefault())) { it.title })
     ListSort.DURATION -> tasks.sortedBy { it.effectiveMinutes }
 }
 

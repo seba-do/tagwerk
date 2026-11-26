@@ -1,41 +1,67 @@
-# Tagwerk (Prototyp)
+# Tagwerk (prototype)
 
-Kostenloser Tagesplaner für Android. Kein Konto, keine Werbung, kein Tracking. Die KI-Funktionen laufen mit deinem eigenen Claude-API-Key direkt vom Gerät zu Anthropic.
+A free day planner for Android. No account, no ads, no tracking. The AI features use your own Claude API key and talk directly from your device to Anthropic.
 
-## Funktionen
+<p align="center">
+  <img src="docs/screenshots/1-plan.png" width="19%" alt="Day plan" />
+  <img src="docs/screenshots/2-lists.png" width="19%" alt="Lists grouped by priority" />
+  <img src="docs/screenshots/3-focus.png" width="19%" alt="Focus timer" />
+  <img src="docs/screenshots/4-menu.png" width="19%" alt="Task menu" />
+  <img src="docs/screenshots/5-assistant.png" width="19%" alt="Assistant" />
+</p>
 
-- **Plan:** Wochenleiste, Tagesabschnitte, feste Uhrzeit oder grobe Tageszeit; Karten lassen sich per Long-Press in jeden Abschnitt ziehen, auch in leere, oder auf „Erledigt“, die Liste scrollt dabei mit; Tippen öffnet ein Menü zum Kopieren, Verschieben, Neuplanen, Zerlegen, Starten, Bearbeiten und Löschen; Herunterziehen lädt die Kalendertermine neu
-- **Kalender:** Termine aus den Kalendern des Geräts erscheinen im Plan, nur lesend und je Kalender abschaltbar; sie werden nicht gespeichert und nicht an die KI geschickt
-- **Listen:** mehrere Listen, gruppieren nach Priorität, Aufgabengröße oder Eisenhower, sortieren von Hand, alphabetisch oder nach Dauer, Erledigte und Vorschläge ausblendbar; Ziehen in eine Gruppe übernimmt deren Priorität oder Eisenhower-Feld; Tippen öffnet das Menü, unter anderem zum Einplanen
-- **Fokus:** Timer aus Zeitstempeln, Pause, `+5`, eigener Timer pro Schritt, Schnellstart ohne Aufgabe, Alarm am Ende und bei jedem Schrittwechsel, auch bei geschlossener App und nach einem Neustart des Geräts
-- **Erinnerungen:** Aufgaben mit fester Uhrzeit melden sich 10 Minuten vorher und zum Start, auch bei geschlossener App und nach einem Neustart des Geräts; in der Meldung lassen sie sich öffnen, als Fokus starten oder abhaken; beide Zeitpunkte sind in den Einstellungen abschaltbar
-- **Widgets:** zwei für den Homescreen, klein und breit, mit der nächsten Aufgabe von heute oder dem laufenden Timer samt Ring, Countdown und den Knöpfen +5, Pause und Erledigt; im breiten lassen sich die Schritte abhaken
-- **Assistent:** Chat mit Vorschlägen, die du erst bestätigst, dazu Spracheingabe über das System
-- **Formular:** Schnell-Anlegen mit Chips, über die drei Punkte das ganze Formular mit Datum, Dauer und Notizen; Emoji und freie Farbe für Aufgaben und Schritte
-- **Schritte:** Emoji folgt live dem Titel, per Griff umsortieren, Timer pro Schritt mit 10 Minuten als Vorgabe; ihre Summe wird zur Dauer
-- **Wiederholungen:** täglich, werktags, am Wochenende, wöchentlich, alle zwei Wochen, monatlich, jährlich oder eigener Rhythmus, optional mit letztem Tag; Änderungen und Löschen wahlweise für einen Termin, ab diesem Termin oder für alle
-- **Zerlegen und Ideen:** KI-Vorschläge für Schritte und Listeneinträge
-- **Bewegung:** Feuerwerk, eigene Töne und Haptik beim Abhaken, Fokus-Ring zum Drehen, Tag und Woche per Wischen, Karten per Long-Press verschieben, in Listen nach links wischen zum Löschen mit Rückgängig; in den Einstellungen abschaltbar, bei im System abgeschalteten Animationen entfällt das Feuerwerk
-- **Einstellungen:** API-Key im Android Keystore verschlüsselt, Modellwahl, Schlüsseltest
+## Download
 
-## Bauen und testen
+Grab the latest APK from the [Releases page](https://github.com/seba-do/tagwerk/releases/latest) and install it on a device running Android 9 or newer. You may need to allow installs from unknown sources.
+
+## Features
+
+- **Plan:** week strip, sections of the day, a fixed time or a rough time of day; long-press a card to drag it into any section, including empty ones, or onto "Done", with the list scrolling along; tapping opens a menu to copy, move, reschedule, break down, start, edit and delete; pull down to reload calendar events
+- **Calendar:** events from the device's calendars appear in the plan, read-only and toggleable per calendar; they are not stored and never sent to the AI
+- **Lists:** multiple lists, grouped by priority, task size or Eisenhower, sorted manually, alphabetically or by duration, with done items and suggestions hideable; dragging into a group takes over its priority or Eisenhower quadrant; tapping opens the menu, for example to schedule an item
+- **Focus:** timer based on timestamps, pause, `+5`, a timer per step, quick start without a task, an alarm at the end and at every step change, even with the app closed and after a reboot
+- **Reminders:** tasks with a fixed time notify 10 minutes before and at the start, even with the app closed and after a reboot; from the notification you can open them, start them as a focus session or check them off; both reminders can be switched off in the settings
+- **Widgets:** two home screen widgets, small and wide, showing today's next task or the running timer with a ring, countdown and the buttons +5, Pause and Done; the wide one lets you check off steps
+- **Assistant:** chat with suggestions you confirm first, plus voice input through the system
+- **Form:** quick add with chips, the full form with date, duration and notes behind the three dots; emoji and free color for tasks and steps
+- **Steps:** the emoji follows the title live, reorder with a handle, a timer per step with 10 minutes as the default; their sum becomes the duration
+- **Repeats:** daily, weekdays, weekends, weekly, every two weeks, monthly, yearly or a custom rhythm, optionally with an end date; edit and delete either one occurrence, this and following, or all
+- **Break down and ideas:** AI suggestions for steps and list items
+- **Motion:** fireworks, custom sounds and haptics when checking off, a focus ring you can turn, swipe between days and weeks, long-press to move cards, swipe left in lists to delete with undo; can be switched off in the settings, and fireworks are skipped when animations are disabled system-wide
+- **Settings:** API key encrypted in the Android Keystore, model choice, key test
+
+The app is available in English and German and follows the device language.
+
+## Translations
+
+All texts live in [`i18n/strings.txt`](i18n/strings.txt), one line per string with English and German side by side. After editing it, regenerate the Android resources:
+
+```bash
+python3 i18n/gen.py
+```
+
+## Build and test
 
 ```bash
 ./gradlew testDebugUnitTest assembleDebug
 ```
 
-Nur auf ein bestimmtes Gerät installieren, weil `installDebug` alle verbundenen Geräte trifft:
+Install on one specific device only, because `installDebug` targets every connected device:
 
 ```bash
 adb -s emulator-5554 install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
-## Noch nicht enthalten
+## Not included yet
 
-Countdown in der Benachrichtigung, eigene Anmeldung bei Google oder iCloud (der Kalender kommt über Android), Sync und Backup. Chats werden nicht gespeichert. Der Speicher ist für den Prototyp eine JSON-Datei; das App-Symbol ist ein Platzhalter.
+Countdown in the notification, a dedicated Google or iCloud sign-in (the calendar comes through Android), sync and backup. Chats are not stored. Storage is a JSON file for this prototype, and the app icon is a placeholder.
 
-## Abgrenzung
+## Scope and attribution
 
-Die Oberfläche ist bewusst eng an Tiimo angelehnt: Aufbau, Maße und Farben wurden an Screenshots gemessen und nachgebaut. Das ist für den privaten Gebrauch gedacht. Vor einer Veröffentlichung sollte die Gestaltung eigenständiger werden und rechtlich geprüft sein.
+The interface is deliberately modeled closely on Tiimo: layout, sizes and colors were measured from screenshots and rebuilt. The design should become more independent before any wider release.
 
-Dateien wurden nicht übernommen: Code, Texte, Töne und Grafiken sind eigen, das Maskottchen und Tiimos Schrift Recoleta sind nicht enthalten. Für Überschriften dient Lora unter der SIL Open Font License (`app/src/main/assets/licenses/Lora-OFL.txt`). Das dunkle Farbschema ist gemessen, das helle ist eine eigene Ableitung. Der Name ist ein Arbeitstitel und nicht markenrechtlich geprüft.
+No files were copied: code, texts, sounds and graphics are original, and the mascot and Tiimo's typeface Recoleta are not included. Headings use Lora under the SIL Open Font License (`app/src/main/assets/licenses/Lora-OFL.txt`). The dark color scheme is measured, the light one is derived independently. The name is a working title and has not been checked for trademarks.
+
+## License
+
+Tagwerk is free software under the [GNU General Public License v3.0](LICENSE). The bundled Lora font is licensed separately under the SIL Open Font License 1.1.

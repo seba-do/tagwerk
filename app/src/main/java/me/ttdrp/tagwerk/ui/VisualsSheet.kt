@@ -1,5 +1,7 @@
 package me.ttdrp.tagwerk.ui
 
+import me.ttdrp.tagwerk.R
+import me.ttdrp.tagwerk.model.str
 import android.icu.lang.UCharacter
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -139,7 +141,7 @@ fun VisualsSheet(
                 EmojiBadge(chosen, fallbackTint, size = 40.dp, color = currentColor, neutral = currentColor == null)
                 Spacer(Modifier.weight(1f))
                 Text(
-                    "Abbrechen",
+                    str(R.string.action_cancel),
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
@@ -148,7 +150,7 @@ fun VisualsSheet(
                         .padding(horizontal = 16.dp, vertical = 12.dp),
                 )
                 Text(
-                    "Speichern",
+                    str(R.string.action_save),
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
@@ -191,14 +193,14 @@ private fun EmojiGrid(selected: String, onPick: (String) -> Unit) {
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.surfaceVariant)
                     .padding(horizontal = 16.dp, vertical = 11.dp)
-                    .semantics { contentDescription = "Emoji suchen" },
+                    .semantics { contentDescription = str(R.string.cd_search_emoji) },
                 singleLine = true,
                 textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onSurface),
                 cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
                 decorationBox = { field ->
                     Box {
                         if (query.isEmpty()) {
-                            Text("Suche", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
+                            Text(str(R.string.search), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
                         }
                         field()
                     }
@@ -211,7 +213,7 @@ private fun EmojiGrid(selected: String, onPick: (String) -> Unit) {
             ) {
                 if (query.isNotBlank()) {
                     if (results.isEmpty()) {
-                        item(span = { GridItemSpan(maxLineSpan) }) { GridLabel("Nichts gefunden") }
+                        item(span = { GridItemSpan(maxLineSpan) }) { GridLabel(str(R.string.nothing_found)) }
                     }
                     items(results, key = { "r-$it" }) { EmojiCell(it, it == selected, onPick) }
                 } else {
@@ -298,7 +300,7 @@ private fun ColorPlane(hue: Float, saturation: Float, value: Float, onChange: (F
         Canvas(
             Modifier
                 .matchParentSize()
-                .semantics { contentDescription = "Farbe wählen" }
+                .semantics { contentDescription = str(R.string.cd_pick_color) }
                 .pointerInput(width, height) { detectTapGestures { report(it) } }
                 .pointerInput(width, height) {
                     detectDragGestures(onDragStart = { report(it) }) { change, _ ->
@@ -328,7 +330,7 @@ private fun HueSlider(hue: Float, onChange: (Float) -> Unit) {
         Canvas(
             Modifier
                 .matchParentSize()
-                .semantics { contentDescription = "Farbton wählen" }
+                .semantics { contentDescription = str(R.string.cd_pick_hue) }
                 .pointerInput(width) { detectTapGestures { report(it.x) } }
                 .pointerInput(width) {
                     detectDragGestures(onDragStart = { report(it.x) }) { change, _ ->

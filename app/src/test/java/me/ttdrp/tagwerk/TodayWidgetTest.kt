@@ -20,6 +20,10 @@ import java.time.LocalDate
 import java.time.ZoneId
 
 class TodayWidgetTest {
+    init {
+        TestStrings.install()
+    }
+
     private val day = LocalDate.of(2026, 11, 9)
     private val zone = ZoneId.of("Europe/Berlin")
 

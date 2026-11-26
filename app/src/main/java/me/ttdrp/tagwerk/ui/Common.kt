@@ -1,5 +1,7 @@
 package me.ttdrp.tagwerk.ui
 
+import me.ttdrp.tagwerk.R
+import me.ttdrp.tagwerk.model.str
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
@@ -79,13 +81,13 @@ import me.ttdrp.tagwerk.model.Task
 import java.util.Locale
 
 fun formatMinutes(minutes: Int): String = when {
-    minutes < 60 -> "${minutes}min"
-    minutes % 60 == 0 -> "${minutes / 60}std"
-    else -> "${minutes / 60}std ${minutes % 60}min"
+    minutes < 60 -> str(R.string.duration_minutes, minutes)
+    minutes % 60 == 0 -> str(R.string.duration_hours, minutes / 60)
+    else -> str(R.string.duration_hours_minutes, minutes / 60, minutes % 60)
 }
 
 fun formatClock(minuteOfDay: Int): String =
-    String.format(Locale.GERMANY, "%02d:%02d", minuteOfDay / 60, minuteOfDay % 60)
+    String.format(Locale.ROOT, "%02d:%02d", minuteOfDay / 60, minuteOfDay % 60)
 
 @Composable
 fun EmojiBadge(emoji: String, tint: Int, size: Dp = 32.dp, color: Int? = null, neutral: Boolean = false) {
@@ -166,7 +168,7 @@ fun SectionHeader(
                     .size(44.dp)
                     .clip(CircleShape)
                     .clickable(role = Role.Button, onClick = onAdd)
-                    .semantics { contentDescription = "Neu in $label" },
+                    .semantics { contentDescription = str(R.string.cd_new_in, label) },
                 contentAlignment = Alignment.Center,
             ) {
                 SmallPlus(MaterialTheme.colorScheme.onSurfaceVariant)
@@ -281,7 +283,7 @@ fun EventCard(event: CalendarEvent, timeLabel: String, onClick: () -> Unit, modi
         Box(Modifier.size(32.dp).background(badge, CircleShape), contentAlignment = Alignment.Center) {
             Icon(
                 Icons.Outlined.Event,
-                contentDescription = "Kalendertermin",
+                contentDescription = str(R.string.cd_calendar_event),
                 tint = if (badge.luminance() > 0.5f) Color.Black else Color.White,
                 modifier = Modifier.size(18.dp),
             )
@@ -368,7 +370,7 @@ private fun StepsPanel(task: Task, onToggleStep: ((Subtask) -> Unit)?) {
             )
             Icon(
                 Icons.Filled.ExpandMore,
-                contentDescription = if (expanded) "Schritte ausblenden" else "Schritte anzeigen",
+                contentDescription = str(if (expanded) R.string.cd_hide_steps else R.string.cd_show_steps),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier
                     .size(22.dp)
@@ -416,7 +418,7 @@ fun CheckButton(done: Boolean, onToggle: () -> Unit, taskCenterLabel: String, st
                     }
                 }
             }
-            .semantics { contentDescription = (if (done) "Wieder öffnen: " else "Abhaken: ") + taskCenterLabel },
+            .semantics { contentDescription = str(if (done) R.string.cd_reopen else R.string.cd_check_off, taskCenterLabel) },
         contentAlignment = Alignment.Center,
     ) {
         val ring = colors.onSurface
@@ -450,11 +452,11 @@ private const val CHECK_VISIBLE_MS = 220L
 fun DoneHeader(count: Int, expanded: Boolean, onToggle: () -> Unit, modifier: Modifier = Modifier) {
     Box(modifier.padding(top = 18.dp, bottom = 6.dp)) {
         PillLabel(
-            "Erledigt ($count)",
+            str(R.string.done_header, count),
             expanded = expanded,
             onClick = onToggle,
             modifier = Modifier.semantics {
-                contentDescription = if (expanded) "Erledigte ausblenden" else "Erledigte anzeigen"
+                contentDescription = str(if (expanded) R.string.cd_hide_done else R.string.cd_show_done)
             },
         )
     }
@@ -464,7 +466,7 @@ fun DoneHeader(count: Int, expanded: Boolean, onToggle: () -> Unit, modifier: Mo
 @Composable
 fun DoneDropZone(highlighted: Boolean, modifier: Modifier = Modifier) {
     Column(modifier.padding(top = 14.dp)) {
-        DashedCard("Zum Abhaken hier ablegen", onClick = {}, highlighted = highlighted, showPlus = false)
+        DashedCard(str(R.string.drop_to_check_off), onClick = {}, highlighted = highlighted, showPlus = false)
     }
 }
 

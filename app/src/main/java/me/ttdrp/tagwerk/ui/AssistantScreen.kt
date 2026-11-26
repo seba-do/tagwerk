@@ -1,5 +1,7 @@
 package me.ttdrp.tagwerk.ui
 
+import me.ttdrp.tagwerk.R
+import me.ttdrp.tagwerk.model.str
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.speech.RecognizerIntent
@@ -104,7 +106,7 @@ fun AssistantScreen(vm: AppViewModel, modifier: Modifier, onOpenSettings: () -> 
                 Spacer(Modifier.weight(1f))
                 AiOrb(150.dp, glow = true)
                 Text(
-                    if (hasKey) "Erzähl einfach, was ansteht.\nWir sortieren das zusammen." else "Dein eigener Schlüssel,\nkein Abo.",
+                    str(if (hasKey) R.string.assistant_intro else R.string.assistant_no_key_title),
                     style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center,
@@ -112,13 +114,12 @@ fun AssistantScreen(vm: AppViewModel, modifier: Modifier, onOpenSettings: () -> 
                 )
                 if (!hasKey) {
                     Text(
-                        "Tagwerk ist kostenlos. Für die KI-Funktionen hinterlegst du deinen eigenen Claude-API-Key. " +
-                            "Du zahlst nur, was du bei Anthropic verbrauchst. Alles andere funktioniert auch ohne.",
+                        str(R.string.assistant_no_key_text),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center,
                     )
-                    InversePill("API-Key hinterlegen", null, onOpenSettings, Modifier.padding(top = 14.dp, bottom = 20.dp))
+                    InversePill(str(R.string.assistant_add_key), null, onOpenSettings, Modifier.padding(top = 14.dp, bottom = 20.dp))
                 }
             }
         } else {
@@ -154,13 +155,13 @@ fun AssistantScreen(vm: AppViewModel, modifier: Modifier, onOpenSettings: () -> 
                 onValueChange = { input = it },
                 modifier = Modifier.weight(1f),
                 enabled = hasKey,
-                placeholder = { Text("Was steht an?") },
+                placeholder = { Text(str(R.string.assistant_placeholder)) },
                 maxLines = 4,
                 colors = plainFieldColors(),
             )
             if (input.isBlank()) {
                 InversePill(
-                    text = "Sprechen",
+                    text = str(R.string.assistant_speak),
                     icon = Icons.Outlined.Mic,
                     enabled = hasKey,
                     onClick = {
@@ -170,13 +171,13 @@ fun AssistantScreen(vm: AppViewModel, modifier: Modifier, onOpenSettings: () -> 
                         try {
                             speech.launch(intent)
                         } catch (e: ActivityNotFoundException) {
-                            vm.notify("Auf diesem Gerät ist keine Spracheingabe verfügbar.")
+                            vm.notify(str(R.string.assistant_no_voice))
                         }
                     },
                 )
             } else {
                 InversePill(
-                    text = "Senden",
+                    text = str(R.string.assistant_send),
                     icon = Icons.AutoMirrored.Filled.Send,
                     enabled = hasKey && !busy,
                     onClick = {
@@ -194,7 +195,7 @@ fun AssistantScreen(vm: AppViewModel, modifier: Modifier, onOpenSettings: () -> 
 private fun AssistantMenu(canClear: Boolean, onClear: () -> Unit, onOpenSettings: () -> Unit) {
     var open by remember { mutableStateOf(false) }
     Box {
-        RoundIconButton(Icons.Filled.Menu, "Menü", onClick = { open = true })
+        RoundIconButton(Icons.Filled.Menu, str(R.string.menu), onClick = { open = true })
         DropdownMenu(
             expanded = open,
             onDismissRequest = { open = false },
@@ -203,7 +204,7 @@ private fun AssistantMenu(canClear: Boolean, onClear: () -> Unit, onOpenSettings
         ) {
             if (canClear) {
                 DropdownMenuItem(
-                    text = { Text("Gespräch leeren", style = MaterialTheme.typography.bodyLarge) },
+                    text = { Text(str(R.string.assistant_clear), style = MaterialTheme.typography.bodyLarge) },
                     leadingIcon = { Icon(Icons.Outlined.DeleteSweep, contentDescription = null) },
                     onClick = {
                         onClear()
@@ -212,7 +213,7 @@ private fun AssistantMenu(canClear: Boolean, onClear: () -> Unit, onOpenSettings
                 )
             }
             DropdownMenuItem(
-                text = { Text("Einstellungen", style = MaterialTheme.typography.bodyLarge) },
+                text = { Text(str(R.string.settings), style = MaterialTheme.typography.bodyLarge) },
                 leadingIcon = { Icon(Icons.Outlined.Settings, contentDescription = null) },
                 onClick = {
                     onOpenSettings()
@@ -278,11 +279,11 @@ private fun ChatBubble(entry: ChatEntry, vm: AppViewModel) {
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
-                            InversePill("Übernehmen", null, { vm.decide(entry, true) })
-                            PillLabel("Verwerfen", container = MaterialTheme.colorScheme.surfaceVariant, onClick = { vm.decide(entry, false) })
+                            InversePill(str(R.string.assistant_accept), null, { vm.decide(entry, true) })
+                            PillLabel(str(R.string.assistant_reject), container = MaterialTheme.colorScheme.surfaceVariant, onClick = { vm.decide(entry, false) })
                         }
-                        true -> Text("Übernommen", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
-                        false -> Text("Verworfen", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        true -> Text(str(R.string.assistant_accepted), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
+                        false -> Text(str(R.string.assistant_rejected), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }

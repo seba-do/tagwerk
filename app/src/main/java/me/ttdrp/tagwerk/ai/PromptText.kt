@@ -9,23 +9,23 @@ import java.util.Locale
 
 object PromptText {
     fun breakDownInstruction(title: String, targetMinutes: Int?): String {
-        val base = "Zerlege diese Aufgabe in kleine Schritte: $title"
-        return if (targetMinutes == null) base else "$base\nDie Schritte sollen zusammen $targetMinutes Minuten dauern."
+        val base = "Break this task down into small steps: $title"
+        return if (targetMinutes == null) base else "$base\nTogether the steps should take $targetMinutes minutes."
     }
 
     fun chatContext(tasks: List<Task>, today: LocalDate): String {
         val todayDay = today.toEpochDay()
         val lines = tasks
             .filter { !it.isDone && (it.kind == Kind.TODO || it.repeat != null || (it.epochDay ?: Long.MIN_VALUE) >= todayDay) }
-            .joinToString("\n") { "- ${it.title} (${it.effectiveMinutes} Min., ${placeOf(it, todayDay)})" }
-        val weekday = today.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.GERMAN)
-        return "Heute ist $weekday, $today.\nOffene Aufgaben des Nutzers:\n${lines.ifEmpty { "(keine)" }}"
+            .joinToString("\n") { "- ${it.title} (${it.effectiveMinutes} min, ${placeOf(it, todayDay)})" }
+        val weekday = today.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.ENGLISH)
+        return "Today is $weekday, $today.\nThe user's open tasks:\n${lines.ifEmpty { "(none)" }}"
     }
 
     private fun placeOf(task: Task, todayDay: Long): String = when {
-        task.kind == Kind.TODO -> "auf der Liste"
-        task.repeat != null -> "wiederholt sich: ${task.repeat.label}"
-        task.epochDay == todayDay -> "heute geplant"
-        else -> "geplant für ${LocalDate.ofEpochDay(task.epochDay ?: todayDay)}"
+        task.kind == Kind.TODO -> "on the list"
+        task.repeat != null -> "repeats: ${task.repeat.label}"
+        task.epochDay == todayDay -> "planned for today"
+        else -> "planned for ${LocalDate.ofEpochDay(task.epochDay ?: todayDay)}"
     }
 }

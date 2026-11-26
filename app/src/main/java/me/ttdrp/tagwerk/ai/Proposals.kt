@@ -1,7 +1,9 @@
 package me.ttdrp.tagwerk.ai
 
+import me.ttdrp.tagwerk.R
 import me.ttdrp.tagwerk.model.Daypart
 import me.ttdrp.tagwerk.model.Kind
+import me.ttdrp.tagwerk.model.str
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
@@ -64,13 +66,13 @@ object Proposals {
     }
 
     fun placeLabel(task: ProposedTask, today: LocalDate): String {
-        val epochDay = planDay(task, today) ?: return "Liste"
+        val epochDay = planDay(task, today) ?: return str(R.string.place_list)
         val day = when (val date = LocalDate.ofEpochDay(epochDay)) {
             today -> null
-            today.plusDays(1) -> "morgen"
-            else -> date.format(DateTimeFormatter.ofPattern("EEE d.M.", Locale.GERMAN))
+            today.plusDays(1) -> str(R.string.place_tomorrow)
+            else -> date.format(DateTimeFormatter.ofPattern(str(R.string.place_date_pattern), Locale.getDefault()))
         }
-        return listOfNotNull("Plan", day, task.daypart.label).joinToString(", ")
+        return listOfNotNull(str(R.string.place_plan), day, task.daypart.label).joinToString(", ")
     }
 
     /**

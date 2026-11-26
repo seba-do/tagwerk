@@ -1,5 +1,7 @@
 package me.ttdrp.tagwerk.model
 
+import me.ttdrp.tagwerk.R
+
 data class AlarmText(val title: String, val text: String)
 
 /** Wann der Timer sich meldet und was er dann sagt. Wie der Timer selbst nur aus Zeitstempeln berechnet. */
@@ -19,13 +21,13 @@ object FocusAlarms {
     fun message(s: FocusSession, task: Task, nowMs: Long): AlarmText? {
         if (s.pausedAtMs != null) return null
         val elapsed = FocusClock.elapsedMs(s, nowMs)
-        if (elapsed >= s.plannedMs) return AlarmText(task.title, "Die geplante Zeit ist um.")
+        if (elapsed >= s.plannedMs) return AlarmText(task.title, str(R.string.alarm_time_up))
         if (offsets(s, task.subtasks).none { it <= elapsed }) return null
         val stage = FocusClock.currentStage(task.subtasks, elapsed)
         val text = if (stage == null) {
-            "Alle Schritte sind durch. Die Zusatzzeit läuft noch."
+            str(R.string.alarm_steps_done)
         } else {
-            "Weiter mit: ${task.subtasks[stage.index].title}"
+            str(R.string.alarm_next_step, task.subtasks[stage.index].title)
         }
         return AlarmText(task.title, text)
     }

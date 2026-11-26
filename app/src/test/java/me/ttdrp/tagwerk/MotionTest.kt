@@ -15,6 +15,10 @@ import kotlin.math.PI
 import kotlin.math.abs
 
 class MotionTest {
+    init {
+        TestStrings.install()
+    }
+
     @Test
     fun `Winkel laeuft von oben im Uhrzeigersinn`() {
         assertEquals(0.0, RingGesture.angle(0f, -10f), 1e-6)

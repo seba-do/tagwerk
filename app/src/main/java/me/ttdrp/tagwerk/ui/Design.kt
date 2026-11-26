@@ -105,7 +105,7 @@ fun PillLabel(
     ) {
         if (leading != null) Icon(leading, contentDescription = null, tint = content, modifier = Modifier.size(18.dp))
         Text(
-            text.uppercase(Locale.GERMAN),
+            text.uppercase(Locale.getDefault()),
             style = MaterialTheme.typography.labelMedium.let { if (tight) it.copy(letterSpacing = 0.2.sp) else it },
             color = content,
         )
